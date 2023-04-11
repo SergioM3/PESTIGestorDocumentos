@@ -1,6 +1,7 @@
 <?php
 
 use App\InterfaceAdapters\Controllers\DocumentTypeController;
+use App\InterfaceAdapters\Controllers\TemporaryFileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,3 +38,6 @@ Route::post('/paragens',[ParagensController::class,'insertNewParagem']);
 Route::post('/users',[UserController::class,'insertNewUser']);
 Route::post('/login',[UserController::class,'login']);
 Route::post('/logout',[UserController::class,'logout']);*/
+
+// File upload routes
+Route::post('temp_file', [TemporaryFileController::class,'saveTemporaryFile']);
