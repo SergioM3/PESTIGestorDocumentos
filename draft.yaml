@@ -1,0 +1,43 @@
+models:
+  Document:
+    user_id: integer
+    documenttype_id: integer
+    document_state: string
+    publish_date: datetime
+    create_date: datetime
+    update_date: nullable datetime
+    delete_date: nullable datetime
+    relationships:
+      hasOne: DocumentType
+      hasMany: DocumentMetaData DownloadRequest
+
+  DocumentType:
+    description: string:400
+    relationships:
+      belongsTo: Document
+
+  DocumentMetaData:
+    document_id: integer
+    metatype_id: integer
+    value: integer
+    relationships:
+      hasOne: MetadataType
+      belongsTo: Document
+
+  MetaDataType:
+    description: string:400
+    relationships:
+      belongsTo: DocumentMetaData
+
+  DownloadRequest:
+    document_id: integer
+    request_state: string 
+    accept_date: nullable datetime
+    reject_date: nullable datetime
+    relationships:
+      belongsTo: User Document
+  
+
+
+seeders: Document, DocumentType, DocumentMetaData, MetaDataType
+  

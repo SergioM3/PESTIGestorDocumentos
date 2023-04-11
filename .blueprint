@@ -1,0 +1,26 @@
+created:
+    - database/factories/DocumentFactory.php
+    - database/factories/DocumentTypeFactory.php
+    - database/factories/DocumentMetaDataFactory.php
+    - database/factories/MetaDataTypeFactory.php
+    - database/factories/DownloadRequestFactory.php
+    - database/migrations/2023_04_10_172234_create_documents_table.php
+    - database/migrations/2023_04_10_172235_create_document_types_table.php
+    - database/migrations/2023_04_10_172236_create_document_meta_data_table.php
+    - database/migrations/2023_04_10_172237_create_meta_data_types_table.php
+    - database/migrations/2023_04_10_172238_create_download_requests_table.php
+    - app/Domain/Aggregates/Document.php
+    - app/Domain/Aggregates/DocumentType.php
+    - app/Domain/Aggregates/DocumentMetaData.php
+    - app/Domain/Aggregates/MetaDataType.php
+    - app/Domain/Aggregates/DownloadRequest.php
+    - database/seeders/DocumentSeeder.php
+    - database/seeders/DocumentTypeSeeder.php
+    - database/seeders/DocumentMetaDataSeeder.php
+    - database/seeders/MetaDataTypeSeeder.php
+models:
+    Document: { user_id: integer, documenttype_id: integer, document_state: string, publish_date: datetime, create_date: datetime, update_date: 'nullable datetime', delete_date: 'nullable datetime', relationships: { hasOne: DocumentType, hasMany: 'DocumentMetaData DownloadRequest' } }
+    DocumentMetaData: { document_id: integer, metatype_id: integer, value: integer, relationships: { hasOne: MetadataType, belongsTo: Document } }
+    DocumentType: { description: 'string:400', relationships: { belongsTo: Document } }
+    MetaDataType: { description: 'string:400', relationships: { belongsTo: DocumentMetaData } }
+    DownloadRequest: { document_id: integer, request_state: string, accept_date: 'nullable datetime', reject_date: 'nullable datetime', relationships: { belongsTo: 'User Document' } }
