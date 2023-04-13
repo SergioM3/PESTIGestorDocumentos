@@ -33,7 +33,7 @@ class DocumentMetaData extends Model
 
     public function metadataType(): HasOne
     {
-        return $this->hasOne(MetadataType::class);
+        return $this->hasOne(MetadataType::class, 'id', 'metatype_id');
     }
 
     public function document(): BelongsTo

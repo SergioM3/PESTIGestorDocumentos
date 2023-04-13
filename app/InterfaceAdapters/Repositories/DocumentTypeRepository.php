@@ -7,7 +7,8 @@ use App\InterfaceAdapters\IRepositories\IDocumentTypeRepository;
 
 class DocumentTypeRepository implements IDocumentTypeRepository
 {
-    public function getAllDocumentTypes() {
+    public function getAllDocumentTypes()
+    {
         return DocumentType::all();
     }
 }

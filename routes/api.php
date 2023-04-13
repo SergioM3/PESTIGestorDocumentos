@@ -1,8 +1,9 @@
 <?php
 
+use App\Domain\Aggregates\Metadata\DocumentMetaData;
 use App\InterfaceAdapters\Controllers\DocumentTypeController;
+use App\InterfaceAdapters\Controllers\DocumentMetaDataController;
 use App\InterfaceAdapters\Controllers\TemporaryFileController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +21,8 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 });*/
 
-Route::get('/document_types',[DocumentTypeController::class,'getAllDocumentTypes']); // Get All Motoristas
+Route::get('/document_meta_data/{id}', [DocumentMetaDataController::class,'getDocumentMetaDataById']);
+Route::get('/document_types', [DocumentTypeController::class,'getAllDocumentTypes']);
 /*Route::get('/clientes',[ClientesController::class,'getAllClientes']);       // Get All Clientes
 Route::get('/camioes',[CamioesController::class,'getAllCamioes']);          // Get All Camioes
 Route::get('/viagens',[ViagensController::class,'getAllViagens']);          // Get All Viagens

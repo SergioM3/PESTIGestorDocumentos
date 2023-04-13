@@ -30,6 +30,6 @@ class MetaDataType extends Model
 
     public function documentMetaData(): BelongsTo
     {
-        return $this->belongsTo(DocumentMetaData::class);
+        return $this->belongsTo(DocumentMetaData::class, 'metatype_id', 'id');
     }
 }

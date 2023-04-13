@@ -3,11 +3,13 @@
 namespace App\InterfaceAdapters\Controllers;
 
 use App\ApplicationServices\IServices\IDocumentTypeService;
-use Illuminate\Http\Request;
 
 class DocumentTypeController extends Controller
 {
-    public function __construct(IDocumentTypeService $service) {
+    private $service;
+
+    public function __construct(IDocumentTypeService $service)
+    {
         $this->service = $service;
     }
 
@@ -20,5 +22,4 @@ class DocumentTypeController extends Controller
             return null;
         }
     }
-    
 }

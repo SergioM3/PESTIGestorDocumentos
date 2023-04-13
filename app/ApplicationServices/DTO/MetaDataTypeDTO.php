@@ -2,14 +2,12 @@
 
 namespace App\ApplicationServices\DTO;
 
-class DocumentTypeDTO
+class MetaDataTypeDTO
 {
-    public int $id;
     public string $description;
 
-    public function __construct(int $id, string $description)
+    public function __construct(string $description)
     {
-        $this->id = $id;
         $this->description = $description;
     }
 }

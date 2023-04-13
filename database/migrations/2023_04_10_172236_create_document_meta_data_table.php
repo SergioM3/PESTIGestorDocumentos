@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('document_id');
             $table->integer('metatype_id');
-            $table->integer('value');
+            $table->string('value');
             $table->timestamps();
         });
     }

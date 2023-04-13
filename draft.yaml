@@ -19,7 +19,7 @@ models:
   DocumentMetaData:
     document_id: integer
     metatype_id: integer
-    value: integer
+    value: string 400
     relationships:
       hasOne: MetadataType
       belongsTo: Document
@@ -31,13 +31,12 @@ models:
 
   DownloadRequest:
     document_id: integer
-    request_state: string 
+    request_state: string
     accept_date: nullable datetime
     reject_date: nullable datetime
     relationships:
       belongsTo: User Document
-  
+
 
 
 seeders: Document, DocumentType, DocumentMetaData, MetaDataType
-  
