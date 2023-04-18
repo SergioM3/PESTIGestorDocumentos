@@ -6,7 +6,7 @@ use App\ApplicationServices\DTO\DocumentSubmitDTO;
 
 interface IDocumentService
 {
-    public function getAllDocuments();
+    public function getDocumentList();
     public function getDocumentById(int $id);
     public function submitNewDocument(DocumentSubmitDTO $documentSubmitDTO);
 }

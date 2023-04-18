@@ -32,16 +32,16 @@ class DocumentService implements IDocumentService
         $this->mediaService = $mediaService;
     }
 
-    public function getAllDocuments()
+    public function getDocumentList()
     {
         $documents = $this->repo->getAllDocuments();
         $documentDTOs = [];
 
         foreach ($documents as $document) {
-            $documentDTOs[] = $this->mapper->toDTO($document);
+            $documentDTOs[] = $this->mapper->toListItemDTO($document);
         }
 
-        return $documentDTOs; // ToDo - Create and change to documentListDTO so that only the document header info is returned
+        return $documentDTOs;
     }
 
     public function getDocumentById(int $id)

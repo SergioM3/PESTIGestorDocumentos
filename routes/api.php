@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/document_meta_data/{id}', [DocumentMetadataController::class,'getDocumentMetadataById']);
 Route::get('/document_types', [DocumentTypeController::class,'getAllDocumentTypes']);
 Route::get('/document/{id}', [DocumentController::class,'getDocumentById']);
-Route::get('/document', [DocumentController::class,'getAllDocuments']);
+Route::get('/document', [DocumentController::class,'getDocumentList']);
 
 // POST Routes
 Route::post('/document', [DocumentController::class,'submitNewDocument']);

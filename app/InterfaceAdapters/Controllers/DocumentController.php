@@ -22,10 +22,10 @@ class DocumentController extends Controller
         $this->service = $service;
     }
 
-    public function getAllDocuments()
+    public function getDocumentList()
     {
         try {
-            return $this->service->getAllDocuments();
+            return $this->service->getDocumentList();
         } catch (\Exception $exception) {
             return $exception;
         }
