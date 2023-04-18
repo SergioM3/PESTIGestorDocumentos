@@ -2,14 +2,19 @@
 
 namespace App\Domain\Aggregates\Document;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Domain\Aggregates\Document\DocumentType;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Domain\Aggregates\Metadata\DocumentMetaData;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Document extends Model
+class Document extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +23,7 @@ class Document extends Model
      */
     protected $fillable = [
         'user_id',
-        'documenttype_id',
+        'document_type_id',
         'document_state',
         'publish_date',
         'create_date',
@@ -33,19 +38,31 @@ class Document extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'user_id' => 'integer',
+        'document_type_id' => 'integer',
         'publish_date' => 'datetime',
         'create_date' => 'datetime',
         'update_date' => 'datetime',
         'delete_date' => 'datetime',
     ];
 
-    public function documentType(): HasOne
+    public function documentType(): BelongsTo
     {
-        return $this->hasOne(DocumentType::class);
+        return $this->belongsTo(DocumentType::class);
     }
 
-    public function documentMetaDataDownloadRequests(): HasMany
+    public function user(): BelongsTo
     {
-        return $this->hasMany(DocumentMetaDataDownloadRequest::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function documentMetadataDownloadRequests(): HasMany
+    {
+        return $this->hasMany(DocumentMetadataDownloadRequest::class);
+    }
+
+    public function documentMetadata(): HasMany
+    {
+        return $this->hasMany(DocumentMetadata::class);
     }
 }

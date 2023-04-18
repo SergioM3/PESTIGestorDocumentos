@@ -5,9 +5,8 @@ namespace App\Domain\Aggregates\Metadata;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class DocumentMetaData extends Model
+class DocumentMetadata extends Model
 {
     use HasFactory;
 
@@ -18,7 +17,7 @@ class DocumentMetaData extends Model
      */
     protected $fillable = [
         'document_id',
-        'metatype_id',
+        'metadata_type_id',
         'value',
     ];
 
@@ -29,15 +28,22 @@ class DocumentMetaData extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'document_id' => 'integer',
+        'metadata_type_id' => 'integer',
     ];
 
-    public function metadataType(): HasOne
+    public function documentMetadataType(): BelongsTo
     {
-        return $this->hasOne(MetadataType::class, 'id', 'metatype_id');
+        return $this->belongsTo(DocumentMetadataType::class);
     }
 
     public function document(): BelongsTo
     {
         return $this->belongsTo(Document::class);
+    }
+
+    public function metadataType(): BelongsTo
+    {
+        return $this->belongsTo(MetadataType::class);
     }
 }

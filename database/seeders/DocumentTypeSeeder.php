@@ -2,16 +2,21 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Aggregates\DocumentType;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DocumentTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public static function run(): void
     {
-        DocumentType::factory()->count(5)->create();
+        $data = [
+            ['description' => 'Artigo Cientifico'],
+            ['description' => 'Tese'],
+            ['description' => 'Outro']
+        ];
+        DB::table('document_types')->insert($data);
     }
 }

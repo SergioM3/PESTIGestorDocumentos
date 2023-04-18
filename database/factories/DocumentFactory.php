@@ -2,9 +2,11 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 use Illuminate\Support\Str;
 use App\Domain\Aggregates\Document;
+use App\Domain\Aggregates\Document\DocumentType;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DocumentFactory extends Factory
 {
@@ -21,8 +23,8 @@ class DocumentFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => $this->faker->numberBetween(-10000, 10000),
-            'documenttype_id' => $this->faker->numberBetween(-10000, 10000),
+            'user_id' => User::factory(),
+            'document_type_id' => DocumentType::factory(),
             'document_state' => $this->faker->word,
             'publish_date' => $this->faker->dateTime(),
             'create_date' => $this->faker->dateTime(),

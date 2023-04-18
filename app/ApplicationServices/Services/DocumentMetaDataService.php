@@ -2,30 +2,43 @@
 
 namespace App\ApplicationServices\Services;
 
-use App\ApplicationServices\IServices\IDocumentMetaDataService;
-use App\InterfaceAdapters\IRepositories\IDocumentMetaDataRepository;
-use App\ApplicationServices\Mappers\DocumentMetaDataMapper;
+use App\Domain\Aggregates\Metadata\DocumentMetaData;
+use App\ApplicationServices\Mappers\DocumentMetadataMapper;
+use App\ApplicationServices\IServices\IDocumentMetadataService;
+use App\InterfaceAdapters\IRepositories\IDocumentMetadataRepository;
 
-class DocumentMetaDataService implements IDocumentMetaDataService
+class DocumentMetadataService implements IDocumentMetadataService
 {
     private $repo;
     private $mapper;
 
-    public function __construct(IDocumentMetaDataRepository $repo, DocumentMetaDataMapper $mapper)
+    public function __construct(IDocumentMetadataRepository $repo, DocumentMetadataMapper $mapper)
     {
         $this->repo = $repo;
         $this->mapper = $mapper;
     }
 
-    public function getDocumentMetaDataById(int $id): array
+    public function getDocumentMetadataById(int $id): array
     {
-        $documentMetaDataList = $this->repo->getDocumentMetaDataById($id);
-        $documentMetaDataDTOs = [];
+        $documentMetadataList = $this->repo->getDocumentMetadataById($id);
+        $documentMetadataDTOs = [];
 
-        foreach ($documentMetaDataList as $documentMetaData) {
-            $documentMetaDataDTOs[] = $this->mapper->toDTO($documentMetaData);
+        foreach ($documentMetadataList as $documentMetadata) {
+            $documentMetadataDTOs[] = $this->mapper->toDTO($documentMetadata);
         }
 
-        return $documentMetaDataDTOs;
+        return $documentMetadataDTOs;
+    }
+
+    public function insertDocumentMetadata($documentMetadataList, $documentId)
+    {
+        foreach ($documentMetadataList as $documentMetadataItem) {
+            $documentMetadata = new DocumentMetadata([
+                'document_id' => $documentId,
+                'value' => $documentMetadataItem['value'],
+                'metadata_type_id' => $documentMetadataItem['metadata_type']['id']
+            ]);
+            $this->repo->insertDocumentMetadata($documentMetadata);
+        }
     }
 }

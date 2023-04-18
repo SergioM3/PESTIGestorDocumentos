@@ -4,7 +4,9 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\Domain\Aggregates\Document;
 use App\Domain\Aggregates\DownloadRequest;
+use App\Domain\Aggregates\User;
 
 class DownloadRequestFactory extends Factory
 {
@@ -21,7 +23,8 @@ class DownloadRequestFactory extends Factory
     public function definition(): array
     {
         return [
-            'document_id' => $this->faker->numberBetween(-10000, 10000),
+            'document_id' => Document::factory(),
+            'user_id' => User::factory(),
             'request_state' => $this->faker->word,
             'accept_date' => $this->faker->dateTime(),
             'reject_date' => $this->faker->dateTime(),

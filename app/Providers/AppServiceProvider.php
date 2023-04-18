@@ -3,16 +3,23 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\ApplicationServices\IServices\IDocumentTypeService;
-use App\ApplicationServices\IServices\IDocumentMetaDataService;
-use App\ApplicationServices\Services\DocumentTypeService;
-use App\ApplicationServices\Services\DocumentMetaDataService;
-use App\InterfaceAdapters\IRepositories\IDocumentTypeRepository;
-use App\InterfaceAdapters\IRepositories\IDocumentMetaDataRepository;
-use App\InterfaceAdapters\Repositories\DocumentTypeRepository;
-use App\InterfaceAdapters\Repositories\DocumentMetaDataRepository;
+use App\ApplicationServices\IServices\IMediaService;
+use App\ApplicationServices\Services\MediaService;
+use App\ApplicationServices\Mappers\DocumentMapper;
+use App\ApplicationServices\Services\DocumentService;
+use App\ApplicationServices\IServices\IDocumentService;
 use App\ApplicationServices\Mappers\DocumentTypeMapper;
-use App\ApplicationServices\Mappers\DocumentMetaDataMapper;
+use App\ApplicationServices\Services\DocumentTypeService;
+use App\InterfaceAdapters\Repositories\DocumentRepository;
+use App\ApplicationServices\IServices\IDocumentTypeService;
+use App\ApplicationServices\Mappers\DocumentMetadataMapper;
+use App\InterfaceAdapters\IRepositories\IDocumentRepository;
+use App\ApplicationServices\Services\DocumentMetadataService;
+use App\InterfaceAdapters\Repositories\DocumentTypeRepository;
+use App\ApplicationServices\IServices\IDocumentMetadataService;
+use App\InterfaceAdapters\IRepositories\IDocumentTypeRepository;
+use App\InterfaceAdapters\Repositories\DocumentMetadataRepository;
+use App\InterfaceAdapters\IRepositories\IDocumentMetadataRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -39,16 +46,34 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(IDocumentTypeService::class, function () {
             $repo = $this->app->make(IDocumentTypeRepository::class);
-            return new DocumentTypeService($repo, new DocumentTypeMapper());
+            $documentTypeMapper = $this->app->make(DocumentTypeMapper::class);
+            return new DocumentTypeService($repo, $documentTypeMapper);
         });
 
-        $this->app->bind(IDocumentMetaDataRepository::class, function () {
-            return new DocumentMetaDataRepository();
+        $this->app->bind(IDocumentMetadataRepository::class, function () {
+            return new DocumentMetadataRepository();
         });
 
-        $this->app->bind(IDocumentMetaDataService::class, function () {
-            $repo = $this->app->make(IDocumentMetaDataRepository::class);
-            return new DocumentMetaDataService($repo, new DocumentMetaDataMapper());
+        $this->app->bind(IDocumentMetadataService::class, function () {
+            $repo = $this->app->make(IDocumentMetadataRepository::class);
+            $documentMetadataMapper = $this->app->make(DocumentMetadataMapper::class);
+            return new DocumentMetadataService($repo, $documentMetadataMapper);
+        });
+
+        $this->app->bind(IDocumentRepository::class, function () {
+            return new DocumentRepository();
+        });
+
+        $this->app->bind(IDocumentService::class, function () {
+            $repo = $this->app->make(IDocumentRepository::class);
+            $documentMapper = $this->app->make(DocumentMapper::class);
+            $documentMetadataService = $this->app->make(IDocumentMetadataService::class);
+            $mediaService = $this->app->make(IMediaService::class);
+            return new DocumentService($repo, $documentMapper, $documentMetadataService, $mediaService);
+        });
+
+        $this->app->bind(IMediaService::class, function () {
+            return new MediaService();
         });
     }
 

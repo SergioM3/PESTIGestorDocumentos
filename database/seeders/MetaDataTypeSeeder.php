@@ -2,16 +2,21 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Aggregates\MetaDataType;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-class MetaDataTypeSeeder extends Seeder
+class MetadataTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public static function run(): void
     {
-        MetaDataType::factory()->count(5)->create();
+        $data = [
+            ['description' => 'Titulo'],
+            ['description' => 'Abstract'],
+            ['description' => 'Keywords']
+        ];
+        DB::table('metadata_types')->insert($data);
     }
 }

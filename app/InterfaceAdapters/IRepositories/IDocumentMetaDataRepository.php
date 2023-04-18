@@ -2,7 +2,8 @@
 
 namespace App\InterfaceAdapters\IRepositories;
 
-interface IDocumentMetaDataRepository
+interface IDocumentMetadataRepository
 {
-    public function getDocumentMetaDataById(int $id);
+    public function getDocumentMetadataById(int $id);
+    public function insertDocumentMetadata($documentMetadata);
 }

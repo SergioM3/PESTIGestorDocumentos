@@ -17,6 +17,7 @@ class DownloadRequest extends Model
      */
     protected $fillable = [
         'document_id',
+        'user_id',
         'request_state',
         'accept_date',
         'reject_date',
@@ -29,6 +30,8 @@ class DownloadRequest extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'document_id' => 'integer',
+        'user_id' => 'integer',
         'accept_date' => 'datetime',
         'reject_date' => 'datetime',
     ];
@@ -36,5 +39,15 @@ class DownloadRequest extends Model
     public function userDocument(): BelongsTo
     {
         return $this->belongsTo(UserDocument::class);
+    }
+
+    public function document(): BelongsTo
+    {
+        return $this->belongsTo(Document::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

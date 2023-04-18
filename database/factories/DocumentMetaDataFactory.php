@@ -4,16 +4,18 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Domain\Aggregates\DocumentMetaData;
+use App\Domain\Aggregates\Document;
+use App\Domain\Aggregates\DocumentMetadata;
+use App\Domain\Aggregates\MetadataType;
 
-class DocumentMetaDataFactory extends Factory
+class DocumentMetadataFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = DocumentMetaData::class;
+    protected $model = DocumentMetadata::class;
 
     /**
      * Define the model's default state.
@@ -21,9 +23,9 @@ class DocumentMetaDataFactory extends Factory
     public function definition(): array
     {
         return [
-            'document_id' => $this->faker->numberBetween(-10000, 10000),
-            'metatype_id' => $this->faker->numberBetween(-10000, 10000),
-            'value' => $this->faker->numberBetween(-10000, 10000),
+            'document_id' => Document::factory(),
+            'metadata_type_id' => MetadataType::factory(),
+            'value' => $this->faker->word,
         ];
     }
 }

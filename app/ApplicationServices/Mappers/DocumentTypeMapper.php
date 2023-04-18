@@ -2,16 +2,16 @@
 
 namespace App\ApplicationServices\Mappers;
 
-use App\Domain\Aggregates\Document\DocumentType;
 use App\ApplicationServices\DTO\DocumentTypeDTO;
+use App\Domain\Aggregates\Document\DocumentType;
 
 class DocumentTypeMapper
 {
-    public function toDTO(DocumentType $documentType): DocumentTypeDTO
+    public static function toDTO(DocumentType $document_type): DocumentTypeDTO
     {
         return new DocumentTypeDTO(
-            $documentType->id,
-            $documentType->description
+            $document_type->id,
+            $document_type->description
         );
     }
 }

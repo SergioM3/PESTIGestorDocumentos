@@ -1,36 +1,36 @@
 models:
   Document:
-    user_id: integer
-    documenttype_id: integer
+    user_id: id foreign
+    document_type_id: id foreign
     document_state: string
     publish_date: datetime
     create_date: datetime
     update_date: nullable datetime
     delete_date: nullable datetime
     relationships:
-      hasOne: DocumentType
-      hasMany: DocumentMetaData DownloadRequest
+      belongsTo: DocumentType
+      hasMany: DocumentMetadata DownloadRequest
 
   DocumentType:
     description: string:400
     relationships:
-      belongsTo: Document
+      hasMany: Document
 
-  DocumentMetaData:
-    document_id: integer
-    metatype_id: integer
+  DocumentMetadata:
+    document_id: id foreign
+    metadata_type_id: id foreign
     value: string 400
     relationships:
-      hasOne: MetadataType
-      belongsTo: Document
+      belongsTo: Document MetadataType
 
-  MetaDataType:
+  MetadataType:
     description: string:400
     relationships:
-      belongsTo: DocumentMetaData
+      hasMany: DocumentMetadata
 
   DownloadRequest:
-    document_id: integer
+    document_id: id foreign
+    user_id: id foreign
     request_state: string
     accept_date: nullable datetime
     reject_date: nullable datetime
@@ -38,5 +38,3 @@ models:
       belongsTo: User Document
 
 
-
-seeders: Document, DocumentType, DocumentMetaData, MetaDataType

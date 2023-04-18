@@ -4,9 +4,9 @@ namespace App\Domain\Aggregates\Metadata;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class MetaDataType extends Model
+class MetadataType extends Model
 {
     use HasFactory;
 
@@ -28,8 +28,8 @@ class MetaDataType extends Model
         'id' => 'integer',
     ];
 
-    public function documentMetaData(): BelongsTo
+    public function documentMetadatas(): HasMany
     {
-        return $this->belongsTo(DocumentMetaData::class, 'metatype_id', 'id');
+        return $this->hasMany(DocumentMetadata::class);
     }
 }

@@ -1,9 +1,10 @@
 <?php
 
-use App\Domain\Aggregates\Metadata\DocumentMetaData;
+use App\Domain\Aggregates\Metadata\DocumentMetadata;
+use App\InterfaceAdapters\Controllers\DocumentController;
 use App\InterfaceAdapters\Controllers\DocumentTypeController;
-use App\InterfaceAdapters\Controllers\DocumentMetaDataController;
-use App\InterfaceAdapters\Controllers\TemporaryFileController;
+use App\InterfaceAdapters\Controllers\DocumentMetadataController;
+use App\InterfaceAdapters\Controllers\MediaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,18 +22,14 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 });*/
 
-Route::get('/document_meta_data/{id}', [DocumentMetaDataController::class,'getDocumentMetaDataById']);
+Route::get('/document_meta_data/{id}', [DocumentMetadataController::class,'getDocumentMetadataById']);
 Route::get('/document_types', [DocumentTypeController::class,'getAllDocumentTypes']);
-/*Route::get('/clientes',[ClientesController::class,'getAllClientes']);       // Get All Clientes
-Route::get('/camioes',[CamioesController::class,'getAllCamioes']);          // Get All Camioes
-Route::get('/viagens',[ViagensController::class,'getAllViagens']);          // Get All Viagens
-Route::get('/viagens/tempoViagem/{viagem}',[ViagensController::class,'getTempoEmViagem']);          // Get Tempo total em viagem
-Route::get('/viagens/{viagem}/tempoParagem',[ViagensController::class,'getTempoParagem']);          // Get Tempo total em paragem
-Route::get('/paragens',[ParagensController::class,'getAllParagens']);       // Get All Paragens
-Route::get('/users',[UserController::class,'getAllUsers']);                 // Get All Users
+Route::get('/document/{id}', [DocumentController::class,'getDocumentById']);
+Route::get('/document', [DocumentController::class,'getAllDocuments']);
 
 // POST Routes
-Route::post('/motoristas',[MotoristasController::class,'insertNewMotorista']);
+Route::post('/document', [DocumentController::class,'submitNewDocument']);
+/*Route::post('/motoristas',[MotoristasController::class,'insertNewMotorista']);
 Route::post('/clientes',[ClientesController::class,'insertNewCliente']);
 Route::post('/camioes',[CamioesController::class,'insertNewCamiao']);
 Route::post('/viagens',[ViagensController::class,'insertNewViagem']);
@@ -42,4 +39,4 @@ Route::post('/login',[UserController::class,'login']);
 Route::post('/logout',[UserController::class,'logout']);*/
 
 // File upload routes
-Route::post('temp_file', [TemporaryFileController::class,'saveTemporaryFile']);
+Route::post('temp_file', [MediaController::class,'saveTemporaryFile']);

@@ -2,14 +2,15 @@
 
 namespace App\ApplicationServices\Mappers;
 
-use App\ApplicationServices\DTO\MetaDataTypeDTO;
-use App\Domain\Aggregates\Metadata\MetaDataType;
+use App\ApplicationServices\DTO\MetadataTypeDTO;
+use App\Domain\Aggregates\Metadata\MetadataType;
 
-class MetaDataTypeMapper
+class MetadataTypeMapper
 {
-    public static function toDTO(MetaDataType $metadata_type): MetaDataTypeDTO
+    public static function toDTO(MetadataType $metadata_type): MetadataTypeDTO
     {
-        return new MetaDataTypeDTO(
+        return new MetadataTypeDTO(
+            $metadata_type->id,
             $metadata_type->description
         );
     }

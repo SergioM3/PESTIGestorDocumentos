@@ -2,13 +2,20 @@
 
 namespace App\InterfaceAdapters\Repositories;
 
-use App\Domain\Aggregates\Metadata\DocumentMetaData;
-use App\InterfaceAdapters\IRepositories\IDocumentMetaDataRepository;
+use App\Domain\Aggregates\Metadata\DocumentMetadata;
+use App\InterfaceAdapters\IRepositories\IDocumentMetadataRepository;
 
-class DocumentMetaDataRepository implements IDocumentMetaDataRepository
+class DocumentMetadataRepository implements IDocumentMetadataRepository
 {
-    public function getDocumentMetaDataById(int $id)
+    public function getDocumentMetadataById(int $id)
     {
-        return DocumentMetaData::with('metadataType')->where('document_id', $id)->get();
+        return DocumentMetadata::with('metadataType')->where('document_id', $id)->get();
+    }
+
+    public function insertDocumentMetadata($documentMetadata)
+    {
+        $documentMetadata->save();
+
+        return $documentMetadata;
     }
 }

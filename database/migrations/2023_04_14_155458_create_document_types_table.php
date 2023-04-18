@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('download_requests', function (Blueprint $table) {
+        Schema::disableForeignKeyConstraints();
+
+        Schema::create('document_types', function (Blueprint $table) {
             $table->id();
-            $table->integer('document_id');
-            $table->string('request_state');
-            $table->dateTime('accept_date')->nullable();
-            $table->dateTime('reject_date')->nullable();
+            $table->string('description', 400);
             $table->timestamps();
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('download_requests');
+        Schema::dropIfExists('document_types');
     }
 };

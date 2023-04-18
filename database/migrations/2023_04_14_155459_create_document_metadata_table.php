@@ -11,11 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('document_types', function (Blueprint $table) {
+        Schema::disableForeignKeyConstraints();
+
+        Schema::create('document_metadata', function (Blueprint $table) {
             $table->id();
-            $table->string('description', 400);
+            $table->foreignId('document_id')->constrained();
+            $table->foreignId('metadata_type_id')->constrained();
+            $table->string('value');
             $table->timestamps();
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -23,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('document_types');
+        Schema::dropIfExists('document_metadata');
     }
 };

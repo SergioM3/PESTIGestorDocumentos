@@ -2,7 +2,8 @@
 
 namespace App\ApplicationServices\IServices;
 
-interface IDocumentMetaDataService
+interface IDocumentMetadataService
 {
-    public function getDocumentMetaDataById(int $id);
+    public function getDocumentMetadataById(int $id);
+    public function insertDocumentMetadata($documentMetadataList, $documentId);
 }

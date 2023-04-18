@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('meta_data_types', function (Blueprint $table) {
+        Schema::disableForeignKeyConstraints();
+
+        Schema::create('metadata_types', function (Blueprint $table) {
             $table->id();
             $table->string('description', 400);
             $table->timestamps();
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('meta_data_types');
+        Schema::dropIfExists('metadata_types');
     }
 };

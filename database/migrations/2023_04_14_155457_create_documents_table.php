@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints();
+
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('documenttype_id');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('document_type_id')->constrained();
             $table->string('document_state');
             $table->dateTime('publish_date');
             $table->dateTime('create_date');
@@ -22,6 +24,8 @@ return new class extends Migration
             $table->dateTime('delete_date')->nullable();
             $table->timestamps();
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**

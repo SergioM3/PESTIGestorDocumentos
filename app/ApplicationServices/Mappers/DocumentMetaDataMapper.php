@@ -2,17 +2,17 @@
 
 namespace App\ApplicationServices\Mappers;
 
-use App\Domain\Aggregates\Metadata\DocumentMetaData;
-use App\ApplicationServices\DTO\DocumentMetaDataDTO;
+use App\Domain\Aggregates\Metadata\DocumentMetadata;
+use App\ApplicationServices\DTO\DocumentMetadataDTO;
 
-class DocumentMetaDataMapper
+class DocumentMetadataMapper
 {
-    public function toDTO(DocumentMetaData $documentType): DocumentMetaDataDTO
+    public static function toDTO(DocumentMetadata $document_metadata): DocumentMetadataDTO
     {
-        return new DocumentMetaDataDTO(
-            $documentType->id,
-            $documentType->value,
-            $documentType->metadataType
+        return new DocumentMetadataDTO(
+            $document_metadata->id,
+            $document_metadata->value,
+            $document_metadata->metadataType
         );
     }
 }
