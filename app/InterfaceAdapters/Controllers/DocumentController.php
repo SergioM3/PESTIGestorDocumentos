@@ -69,4 +69,13 @@ class DocumentController extends Controller
             return $exception;
         }
     }
+
+    public function deleteDocument(int $id)
+    {
+        try {
+            return $this->service->deleteDocument($id);
+        } catch (\Exception $exception) {
+            return $exception;
+        }
+    }
 }

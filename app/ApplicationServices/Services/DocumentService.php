@@ -10,6 +10,7 @@ use App\ApplicationServices\DTO\DocumentSubmitDTO;
 use App\ApplicationServices\Mappers\DocumentMapper;
 use App\ApplicationServices\IServices\IMediaService;
 use App\ApplicationServices\IServices\IDocumentService;
+use App\ApplicationServices\IServices\IZenodoAPIService;
 use App\InterfaceAdapters\IRepositories\IDocumentRepository;
 use App\ApplicationServices\IServices\IDocumentMetadataService;
 
@@ -19,26 +20,36 @@ class DocumentService implements IDocumentService
     private $mapper;
     private $documentMetadataService;
     private $mediaService;
+    private $zenodoAPIService;
 
     public function __construct(
         IDocumentRepository $repo,
         DocumentMapper $mapper,
         IDocumentMetadataService $documentMetadataService,
-        IMediaService $mediaService
+        IMediaService $mediaService,
+        IZenodoAPIService $zenodoAPIService
     ) {
         $this->repo = $repo;
         $this->mapper = $mapper;
         $this->documentMetadataService = $documentMetadataService;
         $this->mediaService = $mediaService;
+        $this->zenodoAPIService = $zenodoAPIService;
     }
 
     public function getDocumentList()
     {
-        $documents = $this->repo->getAllDocuments();
         $documentDTOs = [];
 
+        // Get Internal Documents
+        $documents = $this->repo->getAllDocuments();
         foreach ($documents as $document) {
             $documentDTOs[] = $this->mapper->toListItemDTO($document);
+        }
+
+        // Get Zenodo Documents
+        $zenodoDocuments = $this->zenodoAPIService->getDocumentList();
+        foreach ($zenodoDocuments as $document) {
+            $documentDTOs[] = $document;
         }
 
         return $documentDTOs;
@@ -194,8 +205,28 @@ class DocumentService implements IDocumentService
             rmdir(storage_path($folder));
         }
 
-
         // Returns documentSubmitDTO
         return $this->mapper->toDTO($document); // To Change this to ->toSubmitDTO ASAP (throwing an error, thus toDTO used instead)
+    }
+
+    public function deleteDocument($id)
+    {
+        // Gets the document instance from repository
+        $document = $this->repo->getDocumentById($id);
+
+        // Commands MetadataService to Delete all the old Metadata to the document
+        $this->documentMetadataService->deleteDocumentMetadata($id);
+
+        // Delete uploaded document
+        try {
+            $document->deleteMedia($document->getFirstMedia()->id);
+        } catch (\Exception $exception) {
+            return $exception;
+        }
+
+        // Hard deletes document
+        $document = $this->repo->deleteDocument($id);
+
+        return "Document Deleted";
     }
 }

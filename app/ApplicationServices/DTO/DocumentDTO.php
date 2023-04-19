@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 class DocumentDTO extends DTOAbstract
 {
     public int $id;
-    public int $user_id;
+    public ?int $user_id;
     public string $document_state;
     public string $publish_date;
     public string $create_date;
@@ -24,7 +24,7 @@ class DocumentDTO extends DTOAbstract
 
     public function __construct(
         int $id,
-        int $user_id,
+        ?int $user_id,
         string $document_state,
         ?string $publish_date,
         ?string $create_date,

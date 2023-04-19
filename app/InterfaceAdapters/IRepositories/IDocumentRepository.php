@@ -11,4 +11,5 @@ interface IDocumentRepository
     public function getDocumentById(int $id);
     public function insertNewDocument(Document $document);
     public function editDocument($documentSubmitDTO, Document $document);
+    public function deleteDocument(int $id);
 }

@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\ApplicationServices\IServices\IMediaService;
+use App\ApplicationServices\Services\ZenodoAPIService;
+use App\ApplicationServices\IServices\IZenodoAPIService;
 use App\ApplicationServices\Services\MediaService;
 use App\ApplicationServices\Mappers\DocumentMapper;
+use App\ApplicationServices\IServices\IMediaService;
 use App\ApplicationServices\Services\DocumentService;
 use App\ApplicationServices\IServices\IDocumentService;
 use App\ApplicationServices\Mappers\DocumentTypeMapper;
@@ -69,11 +71,18 @@ class AppServiceProvider extends ServiceProvider
             $documentMapper = $this->app->make(DocumentMapper::class);
             $documentMetadataService = $this->app->make(IDocumentMetadataService::class);
             $mediaService = $this->app->make(IMediaService::class);
-            return new DocumentService($repo, $documentMapper, $documentMetadataService, $mediaService);
+            $zenodoAPIService = $this->app->make(IZenodoAPIService::class);
+            return new DocumentService($repo, $documentMapper, $documentMetadataService, $mediaService, $zenodoAPIService);
         });
 
         $this->app->bind(IMediaService::class, function () {
             return new MediaService();
+        });
+
+        $this->app->bind(IZenodoAPIService::class, function () {
+            $documentMetadataService = $this->app->make(IDocumentMetadataService::class);
+            $documentTypeService = $this->app->make(IDocumentTypeService::class);
+            return new ZenodoAPIService($documentMetadataService, $documentTypeService);
         });
     }
 

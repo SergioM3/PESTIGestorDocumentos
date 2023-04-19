@@ -15,7 +15,8 @@ class MetadataTypeSeeder extends Seeder
         $data = [
             ['description' => 'Titulo'],
             ['description' => 'Abstract'],
-            ['description' => 'Keywords']
+            ['description' => 'Keywords'],
+            ['description' => 'Author']
         ];
         DB::table('metadata_types')->insert($data);
     }

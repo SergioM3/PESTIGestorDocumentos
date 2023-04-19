@@ -45,4 +45,9 @@ class DocumentRepository implements IDocumentRepository
 
         return $document;
     }
+
+    public function deleteDocument($id)
+    {
+        Document::where('id', $id)->delete();
+    }
 }
