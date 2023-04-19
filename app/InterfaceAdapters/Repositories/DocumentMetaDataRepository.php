@@ -18,4 +18,11 @@ class DocumentMetadataRepository implements IDocumentMetadataRepository
 
         return $documentMetadata;
     }
+
+    public function deleteDocumentMetadata(int $id)
+    {
+        //return $id;
+        DocumentMetadata::where('document_id', $id)->delete();
+        //return DocumentMetadata::with('metadataType')->where('document_id', $id)->get();
+    }
 }

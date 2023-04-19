@@ -9,4 +9,5 @@ interface IDocumentService
     public function getDocumentList();
     public function getDocumentById(int $id);
     public function submitNewDocument(DocumentSubmitDTO $documentSubmitDTO);
+    public function editDocument($documentSubmitDTO, $id);
 }

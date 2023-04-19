@@ -54,4 +54,19 @@ class DocumentController extends Controller
             return $exception;
         }
     }
+
+    public function editDocument(Request $request, int $id)
+    {
+        try {
+            $documentSubmitDTO = $request->only(DocumentSubmitDTO::getPublicParams());
+        } catch (\Error $exception) {
+            return $exception->getMessage();
+        }
+
+        try {
+            return $this->service->editDocument($documentSubmitDTO, $id);
+        } catch (\Exception $exception) {
+            return $exception;
+        }
+    }
 }

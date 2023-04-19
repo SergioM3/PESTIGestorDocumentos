@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         UserSeeder::run();
         DocumentTypeSeeder::run();
         MetadataTypeSeeder::run();
-        DocumentSeeder::run();
-        DocumentMetadataSeeder::run();
+        //DocumentSeeder::run();
+        //DocumentMetadataSeeder::run();
     }
 }

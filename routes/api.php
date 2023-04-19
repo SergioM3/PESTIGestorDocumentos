@@ -38,5 +38,8 @@ Route::post('/users',[UserController::class,'insertNewUser']);
 Route::post('/login',[UserController::class,'login']);
 Route::post('/logout',[UserController::class,'logout']);*/
 
+// PUT Routes
+Route::put('/document/{id}', [DocumentController::class,'editDocument']);
+
 // File upload routes
 Route::post('temp_file', [MediaController::class,'saveTemporaryFile']);

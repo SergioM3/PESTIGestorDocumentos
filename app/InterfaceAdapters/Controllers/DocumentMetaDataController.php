@@ -28,6 +28,5 @@ class DocumentMetadataController extends Controller
         } catch (\Exception $exception) {
             return null;
         }
-
     }
 }
