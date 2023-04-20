@@ -5,6 +5,7 @@ namespace App\ApplicationServices\Services;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use App\ApplicationServices\DTO\DocumentDTO;
 use App\Domain\Aggregates\Document\Document;
 use Illuminate\Database\Eloquent\Collection;
@@ -34,21 +35,28 @@ class ZenodoAPIService implements IZenodoAPIService
         $this->documentTypeService = $documentTypeService;
     }
 
+    /**
+     * Returns an array of zenodo documents from it's API get request formated as a DocumentListDTO
+     * This array is cached by the number of seconds configured in the .env file
+     *
+     * @return DocumentListDTO[]
+     */
     public function getDocumentList()
     {
-        $response = Http::withoutVerifying()->get('https://zenodo.org/api/records', [
-            'access_token' => 'hkaMojxKIRnMTND1vrouq4PS3lBv4dfZxXbPyGOKZUbOYV0v7FvApfgTjkng',
-            'size' => 10,
+        //Cache::forget('zenodoDocumentList');
+        return Cache::remember('zenodoDocumentList', env("CACHE_INTERVAL_ZENODO_DOCUMENT_LIST"), function () {
+            $response = Http::withoutVerifying()->get('https://zenodo.org/api/records', [
+                'access_token' => 'hkaMojxKIRnMTND1vrouq4PS3lBv4dfZxXbPyGOKZUbOYV0v7FvApfgTjkng',
+                'size' => 10,
+            ]);
+            $documents = $response->json()["hits"]['hits'];
+            $documentListDTO = [];
 
-        ]);
-        $documents = $response->json()["hits"]['hits'];
-        $documentListDTO = [];
-
-        foreach ($documents as $document) {
-            $documentListDTO[] = $this->mapToDocumentListItemDTO($document);
-        }
-
-        return $documentListDTO;
+            foreach ($documents as $document) {
+                $documentListDTO[] = $this->mapToDocumentListItemDTO($document);
+            }
+            return $documentListDTO;
+        });
     }
 
 
@@ -63,12 +71,14 @@ class ZenodoAPIService implements IZenodoAPIService
      */
     public function getDocumentById(int $id)
     {
-        $response = Http::withoutVerifying()->get('https://zenodo.org/api/records/' . $id, [
-            'access_token' => 'hkaMojxKIRnMTND1vrouq4PS3lBv4dfZxXbPyGOKZUbOYV0v7FvApfgTjkng',
-        ]);
-        $document = $response->json();
-        $documentListItemDTO = $this->mapToDocumentListItemDTO($document);
-        return $documentListItemDTO;
+        return Cache::remember('zenodoDocumentItem' . $id, env("CACHE_INTERVAL_ZENODO_DOCUMENT_ITEM"), function () use ($id) {
+            $response = Http::withoutVerifying()->get('https://zenodo.org/api/records/' . $id, [
+                'access_token' => 'hkaMojxKIRnMTND1vrouq4PS3lBv4dfZxXbPyGOKZUbOYV0v7FvApfgTjkng',
+            ]);
+            $document = $response->json();
+            $documentListItemDTO = $this->mapToDocumentListItemDTO($document);
+            return $documentListItemDTO;
+        });
     }
 
     /**
