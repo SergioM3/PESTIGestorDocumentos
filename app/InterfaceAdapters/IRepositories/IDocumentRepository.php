@@ -9,6 +9,7 @@ interface IDocumentRepository
 {
     public function getAllDocuments();
     public function getDocumentById(int $id);
+    public function searchDocumentsByFilter();
     public function insertNewDocument(Document $document);
     public function editDocument($documentSubmitDTO, Document $document);
     public function deleteDocument(int $id);

@@ -63,8 +63,7 @@ class ZenodoAPIService implements IZenodoAPIService
     /**
      * ToDo : This function is not meant to return a $documentListItemDTO but instead a
      * documentDTO. However, mapping is not as easy, thus this is going to be pondered if
-     * there's a need to implement (only absolutely necessary if there's a need to open
-     * the document in our Frontend API, instead of linking to zenodo page)
+     * there's a need to implement
      *
      * @param  mixed $id
      * @return void

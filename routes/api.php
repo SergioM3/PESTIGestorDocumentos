@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Domain\Aggregates\Metadata\DocumentMetadata;
+use App\InterfaceAdapters\Controllers\LoginController;
 use App\InterfaceAdapters\Controllers\MediaController;
 use App\InterfaceAdapters\Controllers\DocumentController;
 use App\InterfaceAdapters\Controllers\ZenodoAPIController;
@@ -19,33 +20,28 @@ use App\InterfaceAdapters\Controllers\DocumentMetadataController;
 |
 */
 
-/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
+Route::post('/login', [LoginController::class,'login']);
 
-Route::get('/document_meta_data/{id}', [DocumentMetadataController::class,'getDocumentMetadataById']);
-Route::get('/document_types', [DocumentTypeController::class,'getAllDocumentTypes']);
-Route::get('/document/{id}', [DocumentController::class,'getDocumentById']);
-Route::get('/document', [DocumentController::class,'getDocumentList']);
-Route::get('/zenodo-document/{id}', [ZenodoAPIController::class,'getDocumentById']);
-Route::get('/zenodo-document', [ZenodoAPIController::class,'getDocumentList']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/document_meta_data/{id}', [DocumentMetadataController::class,'getDocumentMetadataById']);
+    Route::get('/document_types', [DocumentTypeController::class,'getAllDocumentTypes']);
+    Route::get('/document/{id}', [DocumentController::class,'getDocumentById']);
+    Route::get('/document', [DocumentController::class,'getDocumentList'])->middleware('auth:sanctum');
+    Route::get('/search-document', [DocumentController::class,'searchDocumentsByFilter']);
+    Route::get('/zenodo-document/{id}', [ZenodoAPIController::class,'getDocumentById']);
+    Route::get('/zenodo-document', [ZenodoAPIController::class,'getDocumentList']);
 
-// POST Routes
-Route::post('/document', [DocumentController::class,'submitNewDocument']);
-/*Route::post('/motoristas',[MotoristasController::class,'insertNewMotorista']);
-Route::post('/clientes',[ClientesController::class,'insertNewCliente']);
-Route::post('/camioes',[CamioesController::class,'insertNewCamiao']);
-Route::post('/viagens',[ViagensController::class,'insertNewViagem']);
-Route::post('/paragens',[ParagensController::class,'insertNewParagem']);
-Route::post('/users',[UserController::class,'insertNewUser']);
-Route::post('/login',[UserController::class,'login']);
-Route::post('/logout',[UserController::class,'logout']);*/
+    // POST Routes
+    Route::post('/document', [DocumentController::class,'submitNewDocument']);
 
-// PUT Routes
-Route::put('/document/{id}', [DocumentController::class,'editDocument']);
+    Route::post('/logout', [LoginController::class,'logout'])->middleware('auth:sanctum');
 
-// DELETE Routes
-Route::delete('/document/{id}', [DocumentController::class,'deleteDocument']);
+    // PUT Routes
+    Route::put('/document/{id}', [DocumentController::class,'editDocument']);
 
-// File upload routes
-Route::post('temp_file', [MediaController::class,'saveTemporaryFile']);
+    // DELETE Routes
+    Route::delete('/document/{id}', [DocumentController::class,'deleteDocument']);
+
+    // File upload routes
+    Route::post('temp_file', [MediaController::class,'saveTemporaryFile']);
+});

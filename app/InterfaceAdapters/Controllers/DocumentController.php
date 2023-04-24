@@ -22,10 +22,24 @@ class DocumentController extends Controller
         $this->service = $service;
     }
 
-    public function getDocumentList()
+    public function getDocumentList(Request $request)
     {
         try {
-            return $this->service->getDocumentList();
+            return $this->service->getDocumentList(
+                $request->query('sort_by') ?? null,
+                $request->query('sort_dir') ?? null,
+                $request->query('docs_per_page') ?? null,
+                $request->query('page_number') ?? null
+            );
+        } catch (\Exception $exception) {
+            return $exception;
+        }
+    }
+
+    public function searchDocumentsByFilter()
+    {
+        try {
+            return $this->service->searchDocumentsByFilter();
         } catch (\Exception $exception) {
             return $exception;
         }

@@ -36,23 +36,53 @@ class DocumentService implements IDocumentService
         $this->zenodoAPIService = $zenodoAPIService;
     }
 
-    public function getDocumentList()
+    public function getDocumentList($sortBy, $sortDir, $docsPerPage, $pageNumber)
     {
         $documentDTOs = [];
+        $internalDocumentDTOs = [];
+        $zenodoDocumentDTOs = [];
 
         // Get Internal Documents
-        $documents = $this->repo->getAllDocuments();
+        $documents = $this->repo->getAllDocuments($sortBy, $sortDir);
+        return $documents;
         foreach ($documents as $document) {
-            $documentDTOs[] = $this->mapper->toListItemDTO($document);
+            $internalDocumentDTOs[] = $this->mapper->toListItemDTO($document);
         }
 
         // Get Zenodo Documents
-        $zenodoDocuments = $this->zenodoAPIService->getDocumentList();
+        /*$zenodoDocuments = $this->zenodoAPIService->getDocumentList();
         foreach ($zenodoDocuments as $document) {
-            $documentDTOs[] = $document;
+            $zenodoDocumentDTOs[] = $document;
         }
 
-        return $documentDTOs;
+        array_push($documentDTOs, ['source' => 'internal', 'documents' => $internalDocumentDTOs]);
+        array_push($documentDTOs, ['source' => 'zenodo', 'documents' => $zenodoDocumentDTOs]);*/
+
+        return $internalDocumentDTOs;
+    }
+
+    public function searchDocumentsByFilter()
+    {
+        $documentDTOs = [];
+        $internalDocumentDTOs = [];
+        $zenodoDocumentDTOs = [];
+
+        // Get Internal Documents
+        $documents = $this->repo->searchDocumentsByFilter();
+        foreach ($documents as $document) {
+            $internalDocumentDTOs[] = $this->mapper->toListItemDTO($document);
+        }
+
+        // Get Zenodo Documents
+        /*$zenodoDocuments = $this->zenodoAPIService->getDocumentList();
+        foreach ($zenodoDocuments as $document) {
+            $zenodoDocumentDTOs[] = $document;
+        }
+
+        array_push($documentDTOs, ['source' => 'internal', 'documents' => $internalDocumentDTOs]);
+        array_push($documentDTOs, ['source' => 'zenodo', 'documents' => $zenodoDocumentDTOs]);*/
+
+        return $internalDocumentDTOs;
     }
 
     public function getDocumentById(int $id)
