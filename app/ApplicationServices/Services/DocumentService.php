@@ -68,8 +68,8 @@ class DocumentService implements IDocumentService
         $internalDocumentDTOs = [];
         $zenodoDocumentDTOs = [];
 
-        // Get Internal Documents
-        $documents = $this->repo->searchDocumentsByFilter();
+        // Get Internal Documents - If user is admin, returns pending too, otherwise returns just published documents
+        $documents = Auth::user()->admin == 'Y' ? $this->repo->searchDocumentsByFilter() : $this->repo->searchPublishedDocumentsByFilter();
         foreach ($documents as $document) {
             $internalDocumentDTOs[] = $this->mapper->toListItemDTO($document);
         }
