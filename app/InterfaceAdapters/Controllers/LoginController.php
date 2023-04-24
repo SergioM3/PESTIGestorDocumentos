@@ -41,10 +41,6 @@ class LoginController extends Controller
         } else {
             throw new Exception("Invalid user provider driver specified in configuration.");
         }
-
-
-
-
     }
 
     public function logout()

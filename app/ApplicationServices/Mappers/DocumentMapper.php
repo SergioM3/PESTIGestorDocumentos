@@ -31,7 +31,6 @@ class DocumentMapper
     public function toSubmitDTO(Document $document): DocumentSubmitDTO
     {
         return new DocumentSubmitDTO(
-            $document->user_id,
             $document->document_type_id,
             $document->publish_date,
             $document->documentMetadata,

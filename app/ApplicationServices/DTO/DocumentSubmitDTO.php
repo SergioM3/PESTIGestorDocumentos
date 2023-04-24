@@ -9,7 +9,6 @@ use App\ApplicationServices\DTO\DTOInterface;
 class DocumentSubmitDTO extends DTOAbstract implements DTOInterface
 {
     public function __construct(
-        public readonly int $user_id,
         public readonly ?int $document_type_id,
         public readonly ?string $publish_date = null,
         public readonly ?array $document_metadata = null,

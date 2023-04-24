@@ -4,6 +4,7 @@ namespace App\ApplicationServices\Services;
 
 use Exception;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use App\Domain\Aggregates\Document\Document;
 use App\Domain\Aggregates\Document\TemporaryFile;
 use App\ApplicationServices\DTO\DocumentSubmitDTO;
@@ -120,7 +121,7 @@ class DocumentService implements IDocumentService
                 'document_filename' => 'required'
             ]);*/
         } catch (\Exception $exception) {
-            return $exception;
+            return $exception->getMessage();
         }
 
         // Sets the default document_state based on the publish_date
@@ -128,7 +129,7 @@ class DocumentService implements IDocumentService
 
         // Creates a Document instance (not persisted yet)
         $document = new Document([
-            'user_id' => $documentSubmitDTO->user_id,
+            'user_id' => Auth::user()->id,
             'document_type_id' => $documentSubmitDTO->document_type_id,
             'publish_date' => $documentSubmitDTO->publish_date,
             'document_state' => $document_state,
@@ -171,11 +172,15 @@ class DocumentService implements IDocumentService
 
     public function editDocument($documentSubmitDTO, $id)
     {
-        // Validates the post request
+        // Gets the document instance from repository
+        $document = $this->repo->getDocumentById($id);
+
+        // Validates the request
         try {
-            // Checks if folder and filename are sent on the request, if not, it's likely a temporary file was not submited first
-            //request()->temp_document_folder == null ? throw new Exception("temp_document_folder missing. Upload a temporary file first with api/temp_file") : "";
-            //request()->document_filename == null ? throw new Exception("document_filename missing. Upload a temporary file first with api/temp_file") : "";
+            // Throws an exception if the document doesnt exist
+            $document ?? throw new Exception("The document you're trying to edit doesn't exist");
+            // Throws an exception if the user is not the owner of the document and is not an admin
+            (Auth::user()->admin != 'Y' && Auth::user()->id != $document->user_id) ? throw new Exception("You don't have authorization to edit this file") : "";
 
             // ToDo - Add Business rule validations (exemple : publish date can't be shorter then today)
             /*request()->validate([
@@ -183,12 +188,10 @@ class DocumentService implements IDocumentService
                 'document_filename' => 'required'
             ]);*/
         } catch (\Exception $exception) {
-            return $exception;
+            return $exception->getMessage();
         }
 
 
-        // Gets the document instance from repository
-        $document = $this->repo->getDocumentById($id);
 
         // Persists the Changes to the document Document
         $document = $this->repo->editDocument($documentSubmitDTO, $document);
@@ -244,6 +247,23 @@ class DocumentService implements IDocumentService
         // Gets the document instance from repository
         $document = $this->repo->getDocumentById($id);
 
+        // Validates the request
+        try {
+            // Throws an exception if the document doesnt exist
+            $document ?? throw new Exception("The document you're trying to delete doesn't exist");
+            // Throws an exception if the user is not the owner of the document and is not an admin
+            (Auth::user()->admin != 'Y' && Auth::user()->id != $document->user_id) ? throw new Exception("You don't have authorization to delete this file") : "";
+
+
+            // ToDo - Add Business rule validations (exemple : publish date can't be shorter then today)
+            /*request()->validate([
+                'temp_document_folder' => 'required',
+                'document_filename' => 'required'
+            ]);*/
+        } catch (\Exception $exception) {
+            return $exception->getMessage();
+        }
+
         // Commands MetadataService to Delete all the old Metadata to the document
         $this->documentMetadataService->deleteDocumentMetadata($id);
 
@@ -251,7 +271,7 @@ class DocumentService implements IDocumentService
         try {
             $document->deleteMedia($document->getFirstMedia()->id);
         } catch (\Exception $exception) {
-            return $exception;
+            //return $exception;
         }
 
         // Hard deletes document
