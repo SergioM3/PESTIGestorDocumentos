@@ -26,15 +26,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/document_meta_data/{id}', [DocumentMetadataController::class,'getDocumentMetadataById']);
     Route::get('/document_types', [DocumentTypeController::class,'getAllDocumentTypes']);
     Route::get('/document/{id}', [DocumentController::class,'getDocumentById']);
-    Route::get('/document', [DocumentController::class,'getDocumentList'])->middleware('auth:sanctum');
-    Route::get('/search-document', [DocumentController::class,'searchDocumentsByFilter']);
+    //Route::get('/document', [DocumentController::class,'getDocumentList']);
+    Route::get('/document-list', [DocumentController::class,'getDocumentsByFilter']);
+    Route::get('/document-list/{userId}', [DocumentController::class,'getDocumentsByUserId']);
     Route::get('/zenodo-document/{id}', [ZenodoAPIController::class,'getDocumentById']);
     Route::get('/zenodo-document', [ZenodoAPIController::class,'getDocumentList']);
 
     // POST Routes
     Route::post('/document', [DocumentController::class,'submitNewDocument']);
 
-    Route::post('/logout', [LoginController::class,'logout'])->middleware('auth:sanctum');
+    Route::post('/logout', [LoginController::class,'logout']);
 
     // PUT Routes
     Route::put('/document/{id}', [DocumentController::class,'editDocument']);

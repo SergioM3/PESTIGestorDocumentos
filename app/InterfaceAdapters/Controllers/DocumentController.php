@@ -36,10 +36,19 @@ class DocumentController extends Controller
         }
     }
 
-    public function searchDocumentsByFilter()
+    public function getDocumentsByUserId(int $userId)
     {
         try {
-            return $this->service->searchDocumentsByFilter();
+            return $this->service->getDocumentsByUserId($userId);
+        } catch (\Exception $exception) {
+            return $exception;
+        }
+    }
+
+    public function getDocumentsByFilter()
+    {
+        try {
+            return $this->service->getDocumentsByFilter();
         } catch (\Exception $exception) {
             return $exception;
         }

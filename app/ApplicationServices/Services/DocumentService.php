@@ -62,14 +62,14 @@ class DocumentService implements IDocumentService
         return $internalDocumentDTOs;
     }
 
-    public function searchDocumentsByFilter()
+    public function getDocumentsByFilter()
     {
         $documentDTOs = [];
         $internalDocumentDTOs = [];
         $zenodoDocumentDTOs = [];
 
         // Get Internal Documents - If user is admin, returns pending too, otherwise returns just published documents
-        $documents = Auth::user()->admin == 'Y' ? $this->repo->searchDocumentsByFilter() : $this->repo->searchPublishedDocumentsByFilter();
+        $documents = Auth::user()->admin == 'Y' ? $this->repo->getDocumentsByFilter() : $this->repo->getPublishedDocumentsByFilter();
         foreach ($documents as $document) {
             $internalDocumentDTOs[] = $this->mapper->toListItemDTO($document);
         }
@@ -100,6 +100,18 @@ class DocumentService implements IDocumentService
         return $documentDTO;
     }
 
+    public function getDocumentsByUserId(int $userId)
+    {
+        $documentDTOs = [];
+
+        $documents = $this->repo->getDocumentsByUserId($userId);
+        foreach ($documents as $document) {
+            $documentDTOs[] = $this->mapper->toListItemDTO($document);
+        }
+
+        return $documentDTOs;
+    }
+
     /**
      * Submits a new document according to documentSubmitDTO request data
      * requires that temporary file gets created first
@@ -115,11 +127,19 @@ class DocumentService implements IDocumentService
             request()->temp_document_folder == null ? throw new Exception("temp_document_folder missing. Upload a temporary file first with api/temp_file") : "";
             request()->document_filename == null ? throw new Exception("document_filename missing. Upload a temporary file first with api/temp_file") : "";
 
-            // ToDo - Add Business rule validations (exemple : publish date can't be shorter then today)
-            /*request()->validate([
-                'temp_document_folder' => 'required',
-                'document_filename' => 'required'
-            ]);*/
+            // Gets the count of each document_metadata of the request by metadata_type id
+            $countById = array_count_values(array_column(array_column(request()->document_metadata, 'metadata_type'), 'id'));
+
+            // If there's no count with id = 1, means there's no title, and documents must have a title
+            $countById[1] ?? throw new Exception("You're document MUST have a title!");
+
+            // If title count > 1 throws an error, because there can be only one title
+            $countById[1] > 1 ? throw new Exception("You're document CAN ONLY have ONE title!") : "";
+
+            // If abstract count > 1 throws an error, because there can be only one abstract
+            $countById[2] > 1 ? throw new Exception("You're document CAN ONLY have ONE abstract!") : "";
+
+            // ToDo - Add More Business rule validations as they seem apropriate (example : publish date can't be shorter then today)
         } catch (\Exception $exception) {
             return $exception->getMessage();
         }

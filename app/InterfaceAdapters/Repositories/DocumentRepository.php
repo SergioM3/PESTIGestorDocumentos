@@ -3,10 +3,13 @@
 namespace App\InterfaceAdapters\Repositories;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Schema;
 use App\Domain\Aggregates\Document\Document;
+use Illuminate\Database\Eloquent\Builder;
+use App\Domain\Aggregates\Document\DocumentType;
 use App\ApplicationServices\DTO\DocumentSubmitDTO;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Domain\Aggregates\Metadata\DocumentMetadata;
 use App\InterfaceAdapters\IRepositories\IDocumentRepository;
 
 class DocumentRepository implements IDocumentRepository
@@ -22,19 +25,27 @@ class DocumentRepository implements IDocumentRepository
                             ->get();
     }
 
+    public function getDocumentsByUserId($userId)
+    {
+        $query = Document::with('documentType', 'documentMetadata');
+        $query = $this->addSearchQueryFilters($query);
+        $query = $this->addOrderBy($query);
+        return $query->where('user_id', $userId)->paginate(request()->page_size ?? 20); // Paginate according to page_size param, otherwise 20
+    }
+
     /**
      * Returns a list of documents filtered by the get parameters
      * (DOES NOT Allow not published documents)
      *
      * @return
      */
-    public function searchPublishedDocumentsByFilter()
+    public function getPublishedDocumentsByFilter()
     {
         $query = Document::with('documentType', 'documentMetadata');
         $query = $this->addSearchQueryFilters($query);
         $query = $this->addPublishedFilter($query);
-
-        return $query->get();
+        $query = $this->addOrderBy($query);
+        return $query->paginate(request()->page_size ?? 20); // Paginate according to page_size param, otherwise 20
     }
 
     /**
@@ -43,12 +54,13 @@ class DocumentRepository implements IDocumentRepository
      *
      * @return
      */
-    public function searchDocumentsByFilter()
+    public function getDocumentsByFilter()
     {
         $query = Document::with('documentType', 'documentMetadata');
         $query = $this->addSearchQueryFilters($query);
+        $query = $this->addOrderBy($query);
 
-        return $query->get();
+        return $query->paginate(request()->page_size ?? 20); // Paginate according to page_size param, otherwise 20
     }
 
     public function getDocumentById(int $id)
@@ -92,20 +104,20 @@ class DocumentRepository implements IDocumentRepository
      * This way enforcing it only to show the published documents on the functions where it should
      * be the case
      *
-     * @param  mixed $query
-     * @return object
+     * @param  Builder $query
+     * @return Builder
      */
-    private function addPublishedFilter($query)
+    private function addPublishedFilter(Builder $query): Builder
     {
         return $query->whereDate('publish_date', '<=', Carbon::now());
     }
     /**
      * Adds to a query of documents, the filters allowed to be searchable and returns it.
      *
-     * @param  mixed $query
-     * @return object
+     * @param  Builder $query
+     * @return Builder
      */
-    private function addSearchQueryFilters($query)
+    private function addSearchQueryFilters(Builder $query): Builder
     {
         return $query->whereHas('documentMetadata', function ($query) {
             if (request()->has('title')) {
@@ -142,5 +154,30 @@ class DocumentRepository implements IDocumentRepository
         ->when(request()->has('publish_date_to'), function ($query) {
             $query->whereDate('publish_date', '<=', request()->input('publish_date_to'));
         });
+    }
+
+    /**
+     * Adds Sorting functionality to the query
+     *
+     * @param  Builder $query
+     * @return Builder
+     */
+    private function addOrderBy(Builder $query): Builder
+    {
+        // If the order by is a column existing in the Documents without needing to query a relation table, then orderBy will suffice
+        if (Schema::hasColumn("Documents", request()->orderBy)) {
+            return $query->orderBy(request()->orderBy, request()->orderDir ?? 'desc');
+        } else {
+            switch (request()->orderBy) {
+                case "title": // Order By Title
+                    return $query->orderBy(DocumentMetadata::select('value')->where('metadata_type_id', 1)->whereColumn('document_id', 'documents.id'), request()->orderDir ?? 'desc');
+                case "abstract": // Order By abstract
+                    return $query->orderBy(DocumentMetadata::select('value')->where('metadata_type_id', 2)->whereColumn('document_id', 'documents.id'), request()->orderDir ?? 'desc');
+                case "document_type": // Order By document_type
+                    return $query->orderBy(DocumentType::select('description')->whereColumn('id', 'documents.document_type_id'), request()->orderDir ?? 'desc');
+                default:
+                    return $query;
+            }
+        }
     }
 }
