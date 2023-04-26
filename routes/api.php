@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Domain\Aggregates\Metadata\DocumentMetadata;
 use App\InterfaceAdapters\Controllers\LoginController;
 use App\InterfaceAdapters\Controllers\MediaController;
 use App\InterfaceAdapters\Controllers\DocumentController;
@@ -26,7 +25,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/document_meta_data/{id}', [DocumentMetadataController::class,'getDocumentMetadataById']);
     Route::get('/document_types', [DocumentTypeController::class,'getAllDocumentTypes']);
     Route::get('/document/{id}', [DocumentController::class,'getDocumentById']);
-    //Route::get('/document', [DocumentController::class,'getDocumentList']);
     Route::get('/document-list', [DocumentController::class,'getDocumentsByFilter']);
     Route::get('/document-list/{userId}', [DocumentController::class,'getDocumentsByUserId']);
     Route::get('/zenodo-document/{id}', [ZenodoAPIController::class,'getDocumentById']);

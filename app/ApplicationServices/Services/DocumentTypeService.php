@@ -18,7 +18,7 @@ class DocumentTypeService implements IDocumentTypeService
     }
 
     /**
-     * getAllDocumentTypes
+     * Returns List of all document types
      *
      * @return array    Type of DocumentTypeDTO
      */

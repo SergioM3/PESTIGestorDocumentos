@@ -2,11 +2,8 @@
 
 namespace App\ApplicationServices\Mappers;
 
-use Illuminate\Support\Collection;
 use App\ApplicationServices\DTO\DocumentDTO;
 use App\Domain\Aggregates\Document\Document;
-use App\ApplicationServices\DTO\MapperAbstract;
-use App\ApplicationServices\DTO\DocumentListDTO;
 use App\ApplicationServices\DTO\DocumentSubmitDTO;
 use App\ApplicationServices\DTO\DocumentListItemDTO;
 
@@ -69,7 +66,7 @@ class DocumentMapper
             $document->user_id,
             $document->publish_date,
             $document->documentType,
-            "tempDoi", // ToDo - Add Doi to document model and retreive it here
+            null, // ToDo - Add Doi to document model and retreive it here
             null, // url of internal document must be null
             "Internal", // Source
             isset($document_title)    ? $document_title     : null,

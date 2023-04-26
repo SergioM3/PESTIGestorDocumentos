@@ -20,7 +20,10 @@ class LoginController extends Controller
 
         $credentials = $request->only('mail', 'password');
 
+        // Gets driver type set in file config/auth.php
         $driver = Config::get('auth.providers.users.driver');
+
+        // Uses a diferent authentication logic depending on if using LDAP driver or not
         if ($driver === 'ldap') {
             // LDAP authentication logic
             if (Auth::attempt($credentials)) {

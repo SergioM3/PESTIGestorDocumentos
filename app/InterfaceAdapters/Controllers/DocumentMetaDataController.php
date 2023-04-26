@@ -2,10 +2,6 @@
 
 namespace App\InterfaceAdapters\Controllers;
 
-use Illuminate\Http\Request;
-use SebastianBergmann\Type\VoidType;
-use App\Domain\Aggregates\Document\Document;
-use App\Domain\Aggregates\Metadata\DocumentMetadata;
 use App\ApplicationServices\IServices\IDocumentMetadataService;
 
 /**
@@ -22,7 +18,6 @@ class DocumentMetadataController extends Controller
 
     public function getDocumentMetadataById(int $id)
     {
-        //return DocumentMetadata::with('metadataType')->where('document_id', $id)->get();
         try {
             return $this->service->getDocumentMetadataById($id);
         } catch (\Exception $exception) {

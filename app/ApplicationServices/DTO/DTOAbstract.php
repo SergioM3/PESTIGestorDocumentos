@@ -2,8 +2,6 @@
 
 namespace App\ApplicationServices\DTO;
 
-use ReflectionClass;
-use ReflectionProperty;
 use Illuminate\Contracts\Support\Arrayable;
 
 abstract class DTOAbstract implements Arrayable

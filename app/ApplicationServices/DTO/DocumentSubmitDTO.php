@@ -12,7 +12,7 @@ class DocumentSubmitDTO extends DTOAbstract implements DTOInterface
         public readonly ?int $document_type_id,
         public readonly ?string $publish_date = null,
         public readonly ?array $document_metadata = null,
-        public readonly ?string $temp_document_folder,
+        public readonly ?string $temp_document_folder = null,
         public readonly ?string $document_filename = null
     ) {
         $this->validate();

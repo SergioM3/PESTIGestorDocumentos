@@ -2,24 +2,12 @@
 
 namespace App\ApplicationServices\Services;
 
-use Exception;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
-use App\ApplicationServices\DTO\DocumentDTO;
-use App\Domain\Aggregates\Document\Document;
-use Illuminate\Database\Eloquent\Collection;
 use App\Domain\Aggregates\Document\DocumentType;
-use App\Domain\Aggregates\Document\TemporaryFile;
-use App\ApplicationServices\DTO\DocumentSubmitDTO;
-use App\ApplicationServices\Mappers\DocumentMapper;
-use App\ApplicationServices\DTO\DocumentExternalDTO;
 use App\ApplicationServices\DTO\DocumentListItemDTO;
-use App\ApplicationServices\IServices\IMediaService;
-use App\ApplicationServices\IServices\IDocumentService;
 use App\ApplicationServices\IServices\IZenodoAPIService;
 use App\ApplicationServices\IServices\IDocumentTypeService;
-use App\InterfaceAdapters\IRepositories\IDocumentRepository;
 use App\ApplicationServices\IServices\IDocumentMetadataService;
 
 class ZenodoAPIService implements IZenodoAPIService

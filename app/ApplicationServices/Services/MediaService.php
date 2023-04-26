@@ -14,8 +14,8 @@ class MediaService implements IMediaService
      * Encrypts file from request form with key and chipher set at config/app.php and then
      * Saves it to storage/app/env('MEDIA_TEMP_FOLDER')/UniqueFolderName
      *
-     * @param  mixed $request
-     * @return void
+     * @param  Request $request
+     * @return mixed # Can return TemporaryFile if success or string if error
      */
     public function saveTemporaryFile(Request $request)
     {
@@ -59,7 +59,7 @@ class MediaService implements IMediaService
      * @param  string $filePath # Path to file to encrypt :
      * @return string # returns an encrypted string of the file
      */
-    public function encryptFile(string $filePath)
+    public function encryptFile(string $filePath): string
     {
         return Crypt::encrypt(file_get_contents($filePath));
     }
@@ -68,9 +68,9 @@ class MediaService implements IMediaService
      * Decrypts a file according to config/app.php configuration algorithms
      *
      * @param  string $filePath
-     * @return string # returns a decrypted blob of the file
+     * @return string # returns a decrypted binary of the file
      */
-    public function decryptFile(string $filePath)
+    public function decryptFile(string $filePath): string
     {
         return Crypt::decrypt(file_get_contents($filePath));
     }
@@ -79,9 +79,9 @@ class MediaService implements IMediaService
      * Returns first temporary file instance inside a folder
      *
      * @param  string $folder #Folder of the temporary file to get. Doesn't need a path, just the folder
-     * @return void
+     * @return TemporaryFile
      */
-    public function getTemporaryFileByFolder(string $folder)
+    public function getTemporaryFileByFolder(string $folder): TemporaryFile
     {
         return TemporaryFile::where('folder', $folder)->first();
     }

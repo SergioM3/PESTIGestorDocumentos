@@ -2,11 +2,7 @@
 
 namespace App\InterfaceAdapters\Controllers;
 
-use ReflectionClass;
-use ReflectionProperty;
 use Illuminate\Http\Request;
-use SebastianBergmann\Type\VoidType;
-use App\Domain\Aggregates\Document\Document;
 use App\ApplicationServices\DTO\DocumentSubmitDTO;
 use App\ApplicationServices\IServices\IDocumentService;
 
@@ -20,20 +16,6 @@ class DocumentController extends Controller
     public function __construct(IDocumentService $service)
     {
         $this->service = $service;
-    }
-
-    public function getDocumentList(Request $request)
-    {
-        try {
-            return $this->service->getDocumentList(
-                $request->query('sort_by') ?? null,
-                $request->query('sort_dir') ?? null,
-                $request->query('docs_per_page') ?? null,
-                $request->query('page_number') ?? null
-            );
-        } catch (\Exception $exception) {
-            return $exception;
-        }
     }
 
     public function getDocumentsByUserId(int $userId)
@@ -66,9 +48,10 @@ class DocumentController extends Controller
     public function submitNewDocument(Request $request)
     {
         try {
+            // This guarantees that the request will be parsed to contain all and only the fields necessary to build the DTO
             $documentSubmitDTO = new DocumentSubmitDTO(...$request->only(DocumentSubmitDTO::getPublicParams()));
         } catch (\Error $exception) {
-            return $exception->getMessage();
+            return $exception;
         }
 
         try {

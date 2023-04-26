@@ -7,25 +7,18 @@ use Illuminate\Support\Facades\Schema;
 use App\Domain\Aggregates\Document\Document;
 use Illuminate\Database\Eloquent\Builder;
 use App\Domain\Aggregates\Document\DocumentType;
-use App\ApplicationServices\DTO\DocumentSubmitDTO;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Domain\Aggregates\Metadata\DocumentMetadata;
 use App\InterfaceAdapters\IRepositories\IDocumentRepository;
 
 class DocumentRepository implements IDocumentRepository
 {
     /**
-     * Gets all Documents - Just here for debuging/testing... will remove soon
+     * Returns a list of all documents owned by a user
      *
-     * @return void
+     * @param  int $userId
+     * @return Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getAllDocuments()
-    {
-        return Document::with('documentType', 'documentMetadata')
-                            ->get();
-    }
-
-    public function getDocumentsByUserId($userId)
+    public function getDocumentsByUserId(int $userId)
     {
         $query = Document::with('documentType', 'documentMetadata');
         $query = $this->addSearchQueryFilters($query);
@@ -37,7 +30,7 @@ class DocumentRepository implements IDocumentRepository
      * Returns a list of documents filtered by the get parameters
      * (DOES NOT Allow not published documents)
      *
-     * @return
+     * @return Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPublishedDocumentsByFilter()
     {
@@ -45,6 +38,7 @@ class DocumentRepository implements IDocumentRepository
         $query = $this->addSearchQueryFilters($query);
         $query = $this->addPublishedFilter($query);
         $query = $this->addOrderBy($query);
+        //dd(gettype($query));
         return $query->paginate(request()->page_size ?? 20); // Paginate according to page_size param, otherwise 20
     }
 
@@ -52,7 +46,7 @@ class DocumentRepository implements IDocumentRepository
      * Returns a list of documents filtered by the get parameters
      * (Allows not published documents)
      *
-     * @return
+     * @return Illuminate\Pagination\LengthAwarePaginator
      */
     public function getDocumentsByFilter()
     {
@@ -63,20 +57,37 @@ class DocumentRepository implements IDocumentRepository
         return $query->paginate(request()->page_size ?? 20); // Paginate according to page_size param, otherwise 20
     }
 
-    public function getDocumentById(int $id)
+    /**
+     * Returns a Document from database by it's id
+     *
+     * @param  int $id
+     * @return Document
+     */
+    public function getDocumentById(int $id): Document
     {
         return Document::with('documentType', 'documentMetadata')
                         ->where('id', $id)->first();
     }
 
-    public function insertNewDocument(Document $document)
+    /**
+     * Persists a given Document
+     *
+     * @param  Document $document
+     * @return Document
+     */
+    public function insertNewDocument(Document $document): void
     {
         $document->save();
-
-        return $document;
     }
 
-    public function editDocument($documentSubmitDTO, $document)
+    /**
+     * Edit a document and returns it
+     *
+     * @param  array $documentSubmitDTO # JSON of the request mapped as a documentSubmitDTO object
+     * @param  Document $document # Document to be edited
+     * @return Document
+     */
+    public function editDocument(array $documentSubmitDTO, Document $document): Document
     {
         // Create an array of columns to be updated based on the $documentSubmitDTO object
         $updateData = [];
@@ -94,7 +105,13 @@ class DocumentRepository implements IDocumentRepository
         return $document;
     }
 
-    public function deleteDocument($id)
+    /**
+     * HARD deletes document by it's id
+     *
+     * @param  int $id
+     * @return void
+     */
+    public function deleteDocument(int $id): void
     {
         Document::where('id', $id)->delete();
     }
@@ -111,6 +128,7 @@ class DocumentRepository implements IDocumentRepository
     {
         return $query->whereDate('publish_date', '<=', Carbon::now());
     }
+
     /**
      * Adds to a query of documents, the filters allowed to be searchable and returns it.
      *

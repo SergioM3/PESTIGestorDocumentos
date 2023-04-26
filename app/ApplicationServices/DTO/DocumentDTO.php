@@ -3,7 +3,6 @@
 namespace App\ApplicationServices\DTO;
 
 use App\Domain\Aggregates\Document\DocumentType;
-use App\Domain\Aggregates\Metadata\DocumentMetaData;
 use App\ApplicationServices\Mappers\DocumentTypeMapper;
 use App\ApplicationServices\Mappers\DocumentMetadataMapper;
 use Illuminate\Database\Eloquent\Collection;

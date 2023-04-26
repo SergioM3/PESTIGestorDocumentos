@@ -2,13 +2,6 @@
 
 namespace App\InterfaceAdapters\Controllers;
 
-use ReflectionClass;
-use ReflectionProperty;
-use Illuminate\Http\Request;
-use SebastianBergmann\Type\VoidType;
-use App\Domain\Aggregates\Document\Document;
-use App\ApplicationServices\DTO\DocumentSubmitDTO;
-use App\ApplicationServices\IServices\IDocumentService;
 use App\ApplicationServices\IServices\IZenodoAPIService;
 
 /**

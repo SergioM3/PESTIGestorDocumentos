@@ -2,16 +2,15 @@
 
 namespace App\ApplicationServices\Services;
 
+use App\ApplicationServices\DTO\DocumentDTO;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Domain\Aggregates\Document\Document;
-use App\Domain\Aggregates\Document\TemporaryFile;
 use App\ApplicationServices\DTO\DocumentSubmitDTO;
 use App\ApplicationServices\Mappers\DocumentMapper;
 use App\ApplicationServices\IServices\IMediaService;
 use App\ApplicationServices\IServices\IDocumentService;
-use App\ApplicationServices\IServices\IZenodoAPIService;
 use App\InterfaceAdapters\IRepositories\IDocumentRepository;
 use App\ApplicationServices\IServices\IDocumentMetadataService;
 
@@ -21,72 +20,45 @@ class DocumentService implements IDocumentService
     private $mapper;
     private $documentMetadataService;
     private $mediaService;
-    private $zenodoAPIService;
 
     public function __construct(
         IDocumentRepository $repo,
         DocumentMapper $mapper,
         IDocumentMetadataService $documentMetadataService,
-        IMediaService $mediaService,
-        IZenodoAPIService $zenodoAPIService
+        IMediaService $mediaService
     ) {
         $this->repo = $repo;
         $this->mapper = $mapper;
         $this->documentMetadataService = $documentMetadataService;
         $this->mediaService = $mediaService;
-        $this->zenodoAPIService = $zenodoAPIService;
     }
 
-    public function getDocumentList($sortBy, $sortDir, $docsPerPage, $pageNumber)
+    /**
+     * Returns list of internal Documents
+     * If user is admin, returns pending too, otherwise returns just published documents
+     *
+     * @return array
+     */
+    public function getDocumentsByFilter(): array
     {
         $documentDTOs = [];
-        $internalDocumentDTOs = [];
-        $zenodoDocumentDTOs = [];
-
-        // Get Internal Documents
-        $documents = $this->repo->getAllDocuments($sortBy, $sortDir);
-        return $documents;
-        foreach ($documents as $document) {
-            $internalDocumentDTOs[] = $this->mapper->toListItemDTO($document);
-        }
-
-        // Get Zenodo Documents
-        /*$zenodoDocuments = $this->zenodoAPIService->getDocumentList();
-        foreach ($zenodoDocuments as $document) {
-            $zenodoDocumentDTOs[] = $document;
-        }
-
-        array_push($documentDTOs, ['source' => 'internal', 'documents' => $internalDocumentDTOs]);
-        array_push($documentDTOs, ['source' => 'zenodo', 'documents' => $zenodoDocumentDTOs]);*/
-
-        return $internalDocumentDTOs;
-    }
-
-    public function getDocumentsByFilter()
-    {
-        $documentDTOs = [];
-        $internalDocumentDTOs = [];
-        $zenodoDocumentDTOs = [];
 
         // Get Internal Documents - If user is admin, returns pending too, otherwise returns just published documents
         $documents = Auth::user()->admin == 'Y' ? $this->repo->getDocumentsByFilter() : $this->repo->getPublishedDocumentsByFilter();
         foreach ($documents as $document) {
-            $internalDocumentDTOs[] = $this->mapper->toListItemDTO($document);
+            $documentDTOs[] = $this->mapper->toListItemDTO($document);
         }
 
-        // Get Zenodo Documents
-        /*$zenodoDocuments = $this->zenodoAPIService->getDocumentList();
-        foreach ($zenodoDocuments as $document) {
-            $zenodoDocumentDTOs[] = $document;
-        }
-
-        array_push($documentDTOs, ['source' => 'internal', 'documents' => $internalDocumentDTOs]);
-        array_push($documentDTOs, ['source' => 'zenodo', 'documents' => $zenodoDocumentDTOs]);*/
-
-        return $internalDocumentDTOs;
+        return $documentDTOs;
     }
 
-    public function getDocumentById(int $id)
+    /**
+     * Returns Document details (DocumentDTO) of a document, including file binary, by id
+     *
+     * @param  int $id
+     * @return DocumentDTO
+     */
+    public function getDocumentById(int $id): DocumentDTO
     {
         $document = $this->repo->getDocumentById($id);
         $documentDTO = $this->mapper->toDTO($document);
@@ -100,7 +72,13 @@ class DocumentService implements IDocumentService
         return $documentDTO;
     }
 
-    public function getDocumentsByUserId(int $userId)
+    /**
+     * Returns list of all documents submitted by user
+     *
+     * @param  int $userId
+     * @return array
+     */
+    public function getDocumentsByUserId(int $userId): array
     {
         $documentDTOs = [];
 
@@ -114,34 +92,26 @@ class DocumentService implements IDocumentService
 
     /**
      * Submits a new document according to documentSubmitDTO request data
-     * requires that temporary file gets created first
+     * requires that temporary file gets created first by calling api/temp_file
      *
      * @param  DocumentSubmitDTO $documentSubmitDTO
-     * @return DocumentDTO
+     * @return string
      */
-    public function submitNewDocument(DocumentSubmitDTO $documentSubmitDTO)
+    public function submitNewDocument(DocumentSubmitDTO $documentSubmitDTO): string
     {
         // Validates the post request
         try {
-            // Checks if folder and filename are sent on the request, if not, it's likely a temporary file was not submited first
-            request()->temp_document_folder == null ? throw new Exception("temp_document_folder missing. Upload a temporary file first with api/temp_file") : "";
-            request()->document_filename == null ? throw new Exception("document_filename missing. Upload a temporary file first with api/temp_file") : "";
-
-            // Gets the count of each document_metadata of the request by metadata_type id
-            $countById = array_count_values(array_column(array_column(request()->document_metadata, 'metadata_type'), 'id'));
-
-            // If there's no count with id = 1, means there's no title, and documents must have a title
-            $countById[1] ?? throw new Exception("You're document MUST have a title!");
-
-            // If title count > 1 throws an error, because there can be only one title
-            $countById[1] > 1 ? throw new Exception("You're document CAN ONLY have ONE title!") : "";
-
-            // If abstract count > 1 throws an error, because there can be only one abstract
-            $countById[2] > 1 ? throw new Exception("You're document CAN ONLY have ONE abstract!") : "";
-
-            // ToDo - Add More Business rule validations as they seem apropriate (example : publish date can't be shorter then today)
+            // Checks if folder and filename are sent on the request and file exists in temporary folder
+            // if not, it's likely a temporary file was not submited first
+            request()->temp_document_folder ?? throw new Exception("temp_document_folder missing. Upload a temporary file first with api/temp_file");
+            request()->document_filename ?? throw new Exception("document_filename missing. Upload a temporary file first with api/temp_file");
+            if (!file_exists(storage_path('app/' . env('MEDIA_TEMP_FOLDER') . request()->temp_document_folder . '/' . request()->document_filename))) {
+                throw new Exception("Temporary file missing! Upload a temporary file first with api/temp_file");
+            }
+            // Adds submit common validation rules
+            $this->commonSubmitRules();
         } catch (\Exception $exception) {
-            return $exception->getMessage();
+            return json_encode(['id' => null, 'message' => $exception->getMessage()]);
         }
 
         // Sets the default document_state based on the publish_date
@@ -157,7 +127,7 @@ class DocumentService implements IDocumentService
         ]);
 
         // Persists the Document
-        $document = $this->repo->insertNewDocument($document);
+        $this->repo->insertNewDocument($document);
 
         // Commands MetadataService to Add Document Metadata to the document, in line with meta data in the post request
         $this->documentMetadataService->insertDocumentMetadata($documentSubmitDTO->document_metadata, $document->id);
@@ -177,7 +147,7 @@ class DocumentService implements IDocumentService
         try {
             $document->addMedia($path)->toMediaCollection();
         } catch (\Exception $exception) {
-            return $exception;
+            return json_encode(['id' => null, 'message' => $exception->getMessage()]);
         }
 
         // Delete temporary file database record. (File was already deleted above)
@@ -186,11 +156,17 @@ class DocumentService implements IDocumentService
         // Delete temporary file folder
         rmdir(storage_path($folder));
 
-        // Returns documentSubmitDTO
-        return $this->mapper->toDTO($document); // To Change this to ->toSubmitDTO ASAP (throwing an error, thus toDTO used instead)
+        return json_encode(['id' => $document->id, 'message' => 'Submitted']);
     }
 
-    public function editDocument($documentSubmitDTO, $id)
+    /**
+     * Edits document of user, or any document if user is admin
+     *
+     * @param  array $documentSubmitDTO #JSON of the request mapped as DocumentSubmitDTO
+     * @param  int $id # Id of the document to edit
+     * @return string
+     */
+    public function editDocument(array $documentSubmitDTO, int $id): string
     {
         // Gets the document instance from repository
         $document = $this->repo->getDocumentById($id);
@@ -201,17 +177,11 @@ class DocumentService implements IDocumentService
             $document ?? throw new Exception("The document you're trying to edit doesn't exist");
             // Throws an exception if the user is not the owner of the document and is not an admin
             (Auth::user()->admin != 'Y' && Auth::user()->id != $document->user_id) ? throw new Exception("You don't have authorization to edit this file") : "";
-
-            // ToDo - Add Business rule validations (exemple : publish date can't be shorter then today)
-            /*request()->validate([
-                'temp_document_folder' => 'required',
-                'document_filename' => 'required'
-            ]);*/
+            // Adds Common rules validation
+            $this->commonSubmitRules();
         } catch (\Exception $exception) {
             return $exception->getMessage();
         }
-
-
 
         // Persists the Changes to the document Document
         $document = $this->repo->editDocument($documentSubmitDTO, $document);
@@ -258,11 +228,16 @@ class DocumentService implements IDocumentService
             rmdir(storage_path($folder));
         }
 
-        // Returns documentSubmitDTO
-        return $this->mapper->toDTO($document); // To Change this to ->toSubmitDTO ASAP (throwing an error, thus toDTO used instead)
+        return "Changes Submitted";
     }
 
-    public function deleteDocument($id)
+    /**
+     * HARD Deletes a document owned by the user, or any if user is admin
+     *
+     * @param  int $id # Document id of the document to be deleted
+     * @return string
+     */
+    public function deleteDocument(int $id): string
     {
         // Gets the document instance from repository
         $document = $this->repo->getDocumentById($id);
@@ -273,13 +248,6 @@ class DocumentService implements IDocumentService
             $document ?? throw new Exception("The document you're trying to delete doesn't exist");
             // Throws an exception if the user is not the owner of the document and is not an admin
             (Auth::user()->admin != 'Y' && Auth::user()->id != $document->user_id) ? throw new Exception("You don't have authorization to delete this file") : "";
-
-
-            // ToDo - Add Business rule validations (exemple : publish date can't be shorter then today)
-            /*request()->validate([
-                'temp_document_folder' => 'required',
-                'document_filename' => 'required'
-            ]);*/
         } catch (\Exception $exception) {
             return $exception->getMessage();
         }
@@ -298,5 +266,27 @@ class DocumentService implements IDocumentService
         $document = $this->repo->deleteDocument($id);
 
         return "Document Deleted";
+    }
+
+    /**
+     * Rules commonly applied on submition of document data (new or edit)
+     *
+     * @return void
+     */
+    private function commonSubmitRules(): void
+    {
+        // Gets the count of each document_metadata of the request by metadata_type id
+        $countById = array_count_values(array_column(array_column(request()->document_metadata, 'metadata_type'), 'id'));
+
+        // If there's no count with id = 1, means there's no title, and documents must have a title
+        $countById[1] ?? throw new Exception("You're document MUST have a title!");
+
+        // If title count > 1 throws an error, because there can be only one title
+        $countById[1] > 1 ? throw new Exception("You're document CAN ONLY have ONE title!") : "";
+
+        // If abstract count > 1 throws an error, because there can be only one abstract
+        $countById[2] > 1 ? throw new Exception("You're document CAN ONLY have ONE abstract!") : "";
+
+        // ToDo - Add Business rule validations (exemple : publish date can't be shorter then today)
     }
 }

@@ -12,17 +12,13 @@ class DocumentMetadataRepository implements IDocumentMetadataRepository
         return DocumentMetadata::with('metadataType')->where('document_id', $id)->get();
     }
 
-    public function insertDocumentMetadata($documentMetadata)
+    public function insertDocumentMetadata($documentMetadata): void
     {
         $documentMetadata->save();
-
-        return $documentMetadata;
     }
 
     public function deleteDocumentMetadata(int $id)
     {
-        //return $id;
         DocumentMetadata::where('document_id', $id)->delete();
-        //return DocumentMetadata::with('metadataType')->where('document_id', $id)->get();
     }
 }

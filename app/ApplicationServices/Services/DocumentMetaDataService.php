@@ -18,6 +18,12 @@ class DocumentMetadataService implements IDocumentMetadataService
         $this->mapper = $mapper;
     }
 
+    /**
+     * Returns Metadata list of a document by it's id
+     *
+     * @param  int $id
+     * @return array
+     */
     public function getDocumentMetadataById(int $id): array
     {
         $documentMetadataList = $this->repo->getDocumentMetadataById($id);
@@ -30,7 +36,14 @@ class DocumentMetadataService implements IDocumentMetadataService
         return $documentMetadataDTOs;
     }
 
-    public function insertDocumentMetadata($documentMetadataList, $documentId)
+    /**
+     * Inserts given metadata into a document by it's id
+     *
+     * @param  array $documentMetadataList
+     * @param  int $documentId
+     * @return void
+     */
+    public function insertDocumentMetadata(array $documentMetadataList, int $documentId): void
     {
         foreach ($documentMetadataList as $documentMetadataItem) {
             $documentMetadata = new DocumentMetadata([
@@ -43,13 +56,13 @@ class DocumentMetadataService implements IDocumentMetadataService
     }
 
     /**
-     * Deletes all the metadata from the document given by $documentId
+     * Deletes all the metadata from the document given by document Id
      *
-     * @param  mixed $documentId
+     * @param  int $id
      * @return void
      */
-    public function deleteDocumentMetadata($documentId)
+    public function deleteDocumentMetadata(int $id): void
     {
-        return $this->repo->deleteDocumentMetadata($documentId);
+        $this->repo->deleteDocumentMetadata($id);
     }
 }
