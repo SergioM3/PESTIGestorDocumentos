@@ -1,0 +1,943 @@
+openapi: 3.0.3
+info:
+  title: Laravel
+  description: 'Scientific Documents Manager'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://127.0.0.1:8000'
+paths:
+  /api/login:
+    post:
+      summary: Login
+      operationId: login
+      description: 'Logs in with mail and password and returns an API Bearer token'
+      parameters:
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  token: 22|Vs1ZekychMxKmQsNlUEGW6pjFTwLCzQ1SxwxEzP1
+                properties:
+                  token:
+                    type: string
+                    example: 22|Vs1ZekychMxKmQsNlUEGW6pjFTwLCzQ1SxwxEzP1
+                    description: 'The Bearer token of API'
+        401:
+          description: 'Wrong Credentials'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: 'Invalid Credentials'
+                properties:
+                  error:
+                    type: string
+                    example: 'Invalid Credentials'
+      tags:
+        - 'Authentication Endpoints'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mail:
+                  type: string
+                  description: ''
+                  example: quis
+                password:
+                  type: string
+                  description: ''
+                  example: qui
+              required:
+                - mail
+                - password
+  /api/logout:
+    post:
+      summary: Logout
+      operationId: logout
+      description: "Logs out user by destroying it's token"
+      parameters: []
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+                example: 'logged out'
+      tags:
+        - 'Authentication Endpoints'
+      security: []
+  '/api/document/{id}':
+    get:
+      summary: 'GET Documents By id'
+      operationId: gETDocumentsById
+      description: "Returns document details by it's id"
+      parameters:
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"id\": 53,\n     \"user_id\": 6,\n     \"document_state\": \"Pending\",\n     \"publish_date\": \"2025-12-22 18:00:11\",\n     \"create_date\": \"2023-04-26 14:25:04\",\n     \"update_date\": null,\n     \"delete_date\": null,\n     \"document_type\": {\n         \"id\": 1,\n         \"description\": \"Artigo Cientifico\"\n     },\n     \"document_metadata\": [\n         {\n             \"id\": 355,\n             \"value\": \"quis\",\n             \"metadata_type\": {\n                 \"id\": 1,\n                 \"description\": \"Titulo\"\n             }\n         },\n         {\n             \"id\": 356,\n             \"value\": \"laudantium\",\n             \"metadata_type\": {\n                 \"id\": 2,\n                 \"description\": \"Abstract\"\n             }\n         }\n     ],\n     \"document_media\": {\n         \"id\": 67,\n         \"model_type\": \"App\\\\Domain\\\\Aggregates\\\\Document\\\\Document\",\n         \"model_id\": 53,\n         \"uuid\": \"c6dd8e46-e8c6-4041-bc7f-cf86dcc7d6be\",\n         \"collection_name\": \"default\",\n         \"name\": \"book\",\n         \"file_name\": \"book.pdf\",\n         \"mime_type\": \"text/plain\",\n         \"disk\": \"media\",\n         \"conversions_disk\": \"media\",\n         \"size\": 407608,\n         \"manipulations\": [],\n         \"custom_properties\": [],\n         \"generated_conversions\": [],\n         \"responsive_images\": [],\n         \"order_column\": 1,\n         \"created_at\": \"2023-04-26T14:25:04.000000Z\",\n         \"updated_at\": \"2023-04-26T14:25:04.000000Z\",\n         \"original_url\": \"/storage/67/book.pdf\",\n         \"preview_url\": \"\"\n     },\n     \"document_file\":\n         \"JVBERi0xLjINJeLjz9MNCjY2IDAgb2JqDTw8I\n          MyBdIA0vTCAyMjkxNTYgDS9FIDIwMzU3IA0vT\n          ICAgICAgICAgICAgICAgICAgICAgICAgICAgI\n          MDAwMDE2IDAwMDAwIG4NCjAwMDAwMDExNDggM\n          OTU3IDAwMDAwIG4NCjAwMDAwMDIxNjYgMDAwM\n          IDAwMDAwIG4NCjAwMDAwMDM5MDAgMDAwMDAgb\n          MDAwIG4NCjAwMDAwMDUwOTkgMDAwMDAgbg0==\"\n}"
+      tags:
+        - 'Document(Internal) Endpoints'
+    put:
+      summary: 'PUT Edit Document'
+      operationId: pUTEditDocument
+      description: 'Edits document.'
+      parameters:
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Changes Submited'
+                properties:
+                  message:
+                    type: string
+                    example: 'Changes Submited'
+        400:
+          description: 'Multiple Abstracts'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: "You're document CAN ONLY have ONE abstract!"
+                properties:
+                  error:
+                    type: string
+                    example: "You're document CAN ONLY have ONE abstract!"
+        403:
+          description: 'Not document owner nor Admin'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: "You don't have authorization to edit this file"
+                properties:
+                  error:
+                    type: string
+                    example: "You don't have authorization to edit this file"
+      tags:
+        - 'Document(Internal) Endpoints'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                document_type_id:
+                  type: integer
+                  description: 'ID of the document (Full list of ids can be retreived with api/document_types).'
+                  example: 1
+                publish_date:
+                  type: datetime
+                  description: 'Publish date of the document.'
+                  example: '2025-12-22 18:00:11'
+                document_metadata:
+                  type: array
+                  description: 'Document metadata. MUST HAVE AT LEAST A TITLE (id=1)'
+                  example:
+                    -
+                      value: quis
+                      metadata_type:
+                        id: 1
+                        description: 'Title 1'
+                    -
+                      value: laudantium
+                      metadata_type:
+                        id: 2
+                        description: 'abstract 1'
+                  items:
+                    type: object
+    delete:
+      summary: 'DELETE Document'
+      operationId: dELETEDocument
+      description: "HARD deletes document.\nDO NOT USE if not certain."
+      parameters:
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Document Deleted'
+                properties:
+                  message:
+                    type: string
+                    example: 'Document Deleted'
+        400:
+          description: 'Document ID doesnt exist'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: "The document you're trying to delete doesn't exist"
+                properties:
+                  error:
+                    type: string
+                    example: "The document you're trying to delete doesn't exist"
+        403:
+          description: 'Not document owner nor Admin'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: "You don't have authorization to delete this file"
+                properties:
+                  error:
+                    type: string
+                    example: "You don't have authorization to delete this file"
+      tags:
+        - 'Document(Internal) Endpoints'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The id of the document.'
+        example: 6
+        required: true
+        schema:
+          type: integer
+  /api/document-list:
+    get:
+      summary: 'GET Documents List'
+      operationId: gETDocumentsList
+      description: 'Returns a document list of all documents if user is admin, otherwise just published documents'
+      parameters:
+        -
+          in: query
+          name: title
+          description: 'Filters documents by title.'
+          example: 'Titulo 1'
+          required: false
+          schema:
+            type: string
+            description: 'Filters documents by title.'
+            example: 'Titulo 1'
+        -
+          in: query
+          name: abstract
+          description: 'Filters documents by abstract.'
+          example: 'Abstract 1'
+          required: false
+          schema:
+            type: string
+            description: 'Filters documents by abstract.'
+            example: 'Abstract 1'
+        -
+          in: query
+          name: document_state
+          description: "Filters documents by it's state (Accepted Published and Pending only)."
+          example: Published
+          required: false
+          schema:
+            type: string
+            description: "Filters documents by it's state (Accepted Published and Pending only)."
+            example: Published
+        -
+          in: query
+          name: document_type
+          description: "Filters documents by it's type."
+          example: 'Artigo Cientifico'
+          required: false
+          schema:
+            type: string
+            description: "Filters documents by it's type."
+            example: 'Artigo Cientifico'
+        -
+          in: query
+          name: publish_date_from
+          description: 'datetime Filters to return only documents published after this date.'
+          example: '2020-12-22'
+          required: false
+          schema:
+            type: string
+            description: 'datetime Filters to return only documents published after this date.'
+            example: '2020-12-22'
+        -
+          in: query
+          name: publish_date_to
+          description: 'datetime Filters to return only documents published before this date.'
+          example: '2026-12-22'
+          required: false
+          schema:
+            type: string
+            description: 'datetime Filters to return only documents published before this date.'
+            example: '2026-12-22'
+        -
+          in: query
+          name: page
+          description: 'Pagination -> number of the page to see.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Pagination -> number of the page to see.'
+            example: 1
+        -
+          in: query
+          name: page_size
+          description: 'Pagination -> number of documents to see per page.'
+          example: 10
+          required: false
+          schema:
+            type: integer
+            description: 'Pagination -> number of documents to see per page.'
+            example: 10
+        -
+          in: query
+          name: orderBy
+          description: 'Sorting -> Field by which documents are sorted.'
+          example: source
+          required: false
+          schema:
+            type: string
+            description: 'Sorting -> Field by which documents are sorted.'
+            example: source
+        -
+          in: query
+          name: orderDir
+          description: 'Sorting -> Sorting direction.'
+          example: 0
+          required: false
+          schema:
+            type: integer
+            description: 'Sorting -> Sorting direction.'
+            example: 0
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 35
+                  user_id: 6
+                  document_state: Pending
+                  publish_date: '2025-12-22 18:00:11'
+                  document_type: 'Artigo Cientifico'
+                  document_title: 'Titulo de documento'
+                  doi: null
+                  url: null
+                  source: Internal
+                  document_abstract: quis
+                  document_keywords:
+                    - laudantium
+                  document_authors: []
+                properties:
+                  id:
+                    type: integer
+                    example: 35
+                  user_id:
+                    type: integer
+                    example: 6
+                  document_state:
+                    type: string
+                    example: Pending
+                  publish_date:
+                    type: string
+                    example: '2025-12-22 18:00:11'
+                  document_type:
+                    type: string
+                    example: 'Artigo Cientifico'
+                  document_title:
+                    type: string
+                    example: 'Titulo de documento'
+                  doi:
+                    type: string
+                    example: null
+                  url:
+                    type: string
+                    example: null
+                  source:
+                    type: string
+                    example: Internal
+                  document_abstract:
+                    type: string
+                    example: quis
+                  document_keywords:
+                    type: array
+                    example:
+                      - laudantium
+                    items:
+                      type: string
+                  document_authors:
+                    type: array
+                    example: []
+      tags:
+        - 'Document(Internal) Endpoints'
+    parameters:
+      -
+        in: path
+        name: userId
+        description: 'The id of the user.'
+        example: 6
+        required: true
+        schema:
+          type: integer
+  '/api/document-list/{userId}':
+    get:
+      summary: 'GET Documents by User'
+      operationId: gETDocumentsByUser
+      description: 'Gets document list of all documents owned by a specified user'
+      parameters:
+        -
+          in: query
+          name: title
+          description: 'Filters documents by title.'
+          example: 'Titulo 1'
+          required: false
+          schema:
+            type: string
+            description: 'Filters documents by title.'
+            example: 'Titulo 1'
+        -
+          in: query
+          name: abstract
+          description: 'Filters documents by abstract.'
+          example: 'Abstract 1'
+          required: false
+          schema:
+            type: string
+            description: 'Filters documents by abstract.'
+            example: 'Abstract 1'
+        -
+          in: query
+          name: document_state
+          description: "Filters documents by it's state (Accepted Published and Pending only)."
+          example: Published
+          required: false
+          schema:
+            type: string
+            description: "Filters documents by it's state (Accepted Published and Pending only)."
+            example: Published
+        -
+          in: query
+          name: document_type
+          description: "Filters documents by it's type."
+          example: 'Artigo Cientifico'
+          required: false
+          schema:
+            type: string
+            description: "Filters documents by it's type."
+            example: 'Artigo Cientifico'
+        -
+          in: query
+          name: publish_date_from
+          description: 'datetime Filters to return only documents published after this date.'
+          example: '2020-12-22'
+          required: false
+          schema:
+            type: string
+            description: 'datetime Filters to return only documents published after this date.'
+            example: '2020-12-22'
+        -
+          in: query
+          name: publish_date_to
+          description: 'datetime Filters to return only documents published before this date.'
+          example: '2026-12-22'
+          required: false
+          schema:
+            type: string
+            description: 'datetime Filters to return only documents published before this date.'
+            example: '2026-12-22'
+        -
+          in: query
+          name: page
+          description: 'Pagination -> number of the page to see.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Pagination -> number of the page to see.'
+            example: 1
+        -
+          in: query
+          name: page_size
+          description: 'Pagination -> number of documents to see per page.'
+          example: 10
+          required: false
+          schema:
+            type: integer
+            description: 'Pagination -> number of documents to see per page.'
+            example: 10
+        -
+          in: query
+          name: orderBy
+          description: 'Sorting -> Field by which documents are sorted.'
+          example: source
+          required: false
+          schema:
+            type: string
+            description: 'Sorting -> Field by which documents are sorted.'
+            example: source
+        -
+          in: query
+          name: orderDir
+          description: 'Sorting -> Sorting direction.'
+          example: 0
+          required: false
+          schema:
+            type: integer
+            description: 'Sorting -> Sorting direction.'
+            example: 0
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 35
+                  user_id: 6
+                  document_state: Pending
+                  publish_date: '2025-12-22 18:00:11'
+                  document_type: 'Artigo Cientifico'
+                  document_title: 'Titulo de documento'
+                  doi: null
+                  url: null
+                  source: Internal
+                  document_abstract: quis
+                  document_keywords:
+                    - laudantium
+                  document_authors: []
+                properties:
+                  id:
+                    type: integer
+                    example: 35
+                  user_id:
+                    type: integer
+                    example: 6
+                  document_state:
+                    type: string
+                    example: Pending
+                  publish_date:
+                    type: string
+                    example: '2025-12-22 18:00:11'
+                  document_type:
+                    type: string
+                    example: 'Artigo Cientifico'
+                  document_title:
+                    type: string
+                    example: 'Titulo de documento'
+                  doi:
+                    type: string
+                    example: null
+                  url:
+                    type: string
+                    example: null
+                  source:
+                    type: string
+                    example: Internal
+                  document_abstract:
+                    type: string
+                    example: quis
+                  document_keywords:
+                    type: array
+                    example:
+                      - laudantium
+                    items:
+                      type: string
+                  document_authors:
+                    type: array
+                    example: []
+      tags:
+        - 'Document(Internal) Endpoints'
+    parameters:
+      -
+        in: path
+        name: userId
+        description: 'The id of the user.'
+        example: 6
+        required: true
+        schema:
+          type: integer
+  /api/document:
+    post:
+      summary: 'POST Submit Document'
+      operationId: pOSTSubmitDocument
+      description: "Submits document.\nMUST first upload temporary file with api/temp_file"
+      parameters:
+        -
+          in: query
+          name: temp_document_folder
+          description: 'Sub-folder within temp folder where the file was temporarily uploaded to.'
+          example: 6449343e3d09e-1682519102
+          required: true
+          schema:
+            type: string
+            description: 'Sub-folder within temp folder where the file was temporarily uploaded to.'
+            example: 6449343e3d09e-1682519102
+        -
+          in: query
+          name: document_filename
+          description: 'File name of the temporary file uploaded.'
+          example: document.pdf
+          required: true
+          schema:
+            type: string
+            description: 'File name of the temporary file uploaded.'
+            example: document.pdf
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses:
+        201:
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"id\" : 302\n     \"message\" : \"Document Submited\"\n}"
+        400:
+          description: 'Multiple Abstracts'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: "You're document CAN ONLY have ONE abstract!"
+                properties:
+                  error:
+                    type: string
+                    example: "You're document CAN ONLY have ONE abstract!"
+      tags:
+        - 'Document(Internal) Endpoints'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                document_type_id:
+                  type: integer
+                  description: 'ID of the document (Full list of ids can be retreived with api/document_types).'
+                  example: 1
+                publish_date:
+                  type: datetime
+                  description: 'Publish date of the document.'
+                  example: '2025-12-22 18:00:11'
+                document_metadata:
+                  type: array
+                  description: 'Document metadata. MUST HAVE AT LEAST A TITLE (id=1)'
+                  example:
+                    -
+                      value: quis
+                      metadata_type:
+                        id: 1
+                        description: 'Title 1'
+                    -
+                      value: laudantium
+                      metadata_type:
+                        id: 2
+                        description: 'abstract 1'
+                  items:
+                    type: object
+              required:
+                - document_type_id
+                - publish_date
+                - document_metadata
+  /api/temp_file:
+    post:
+      summary: 'POST Upload Temporary File'
+      operationId: pOSTUploadTemporaryFile
+      description: "This endpoint saves a file on the request to a temporary location\nand persists it's meta to a database table"
+      parameters:
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  folder: 6449ce12a98dc-1682558482
+                  filename: book.pdf
+                  updated_at: '2023-04-27T01:21:22.000000Z'
+                  created_at: '2023-04-27T01:21:22.000000Z'
+                  id: 78
+                properties:
+                  folder:
+                    type: string
+                    example: 6449ce12a98dc-1682558482
+                  filename:
+                    type: string
+                    example: book.pdf
+                  updated_at:
+                    type: string
+                    example: '2023-04-27T01:21:22.000000Z'
+                  created_at:
+                    type: string
+                    example: '2023-04-27T01:21:22.000000Z'
+                  id:
+                    type: integer
+                    example: 78
+      tags:
+        - 'Document(Internal) Endpoints'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                upload_file:
+                  type: string
+                  format: binary
+                  description: 'The document to upload on the form-data.'
+              required:
+                - upload_file
+  '/api/document_meta_data/{id}':
+    get:
+      summary: 'GET DocumentMetadata'
+      operationId: gETDocumentMetadata
+      description: "Returns array of meta data objects of a document by it's id"
+      parameters:
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example:
+                  -
+                    id: 90
+                    value: quis
+                    metadata_type:
+                      id: 2
+                      description: Abstract
+                  -
+                    id: 91
+                    value: keyword2
+                    metadata_type:
+                      id: 3
+                      description: Keywords
+                  -
+                    id: 92
+                    value: checkTitulo1
+                    metadata_type:
+                      id: 1
+                      description: Titulo
+      tags:
+        - 'DocumentMetadata Endpoints'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The id of the document.'
+        example: 6
+        required: true
+        schema:
+          type: integer
+  /api/document_types:
+    get:
+      summary: 'GET All Document Types'
+      operationId: gETAllDocumentTypes
+      description: 'Returns a list of all the document types in the system'
+      parameters:
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example:
+                  -
+                    id: 90
+                    description: 'Artigo Cientifico'
+                  -
+                    id: 91
+                    description: Tese
+                  -
+                    id: 92
+                    description: Outro
+      tags:
+        - 'DocumentTypes Endpoints'
+  '/api/zenodo-document/{id}':
+    get:
+      summary: ''
+      operationId: getApiZenodoDocumentId
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - 'Other Undocumented Endpoints'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the zenodo document.'
+        example: blanditiis
+        required: true
+        schema:
+          type: string
+  /api/zenodo-document:
+    get:
+      summary: ''
+      operationId: getApiZenodoDocument
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - 'Other Undocumented Endpoints'
+tags:
+  -
+    name: 'Authentication Endpoints'
+    description: "\nAPI to Authenticate User"
+  -
+    name: 'Document(Internal) Endpoints'
+    description: "\nDocument API endpoint"
+  -
+    name: 'DocumentMetadata Endpoints'
+    description: "\nDocumentMetadata API endpoint"
+  -
+    name: 'DocumentTypes Endpoints'
+    description: "\nDocumentTypes API endpoint"
+  -
+    name: 'Other Undocumented Endpoints'
+    description: "\nThese endpoints are incomplete or not properly documented"
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: ''
+security:
+  -
+    default: []

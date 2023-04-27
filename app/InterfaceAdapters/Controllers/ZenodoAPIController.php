@@ -5,7 +5,9 @@ namespace App\InterfaceAdapters\Controllers;
 use App\ApplicationServices\IServices\IZenodoAPIService;
 
 /**
- * This controller is responsible for retreiving and setting document metadata
+ * @group Other Undocumented Endpoints
+ *
+ * These endpoints are incomplete or not properly documented
  */
 class ZenodoAPIController extends Controller
 {

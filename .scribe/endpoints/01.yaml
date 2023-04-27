@@ -1,0 +1,81 @@
+name: 'DocumentMetadata Endpoints'
+description: |-
+
+  DocumentMetadata API endpoint
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: 'api/document_meta_data/{id}'
+    metadata:
+      groupName: 'DocumentMetadata Endpoints'
+      groupDescription: |-
+
+        DocumentMetadata API endpoint
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'GET DocumentMetadata'
+      description: "Returns array of meta data objects of a document by it's id"
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The id of the document.'
+        required: true
+        example: 6
+        type: integer
+        custom: []
+    cleanUrlParameters:
+      id: 6
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          [
+               {
+                   "id": 90,
+                   "value": "quis",
+                   "metadata_type": {
+                       "id": 2,
+                       "description": "Abstract"
+                   }
+               },
+               {
+                   "id": 91,
+                   "value": "keyword2",
+                   "metadata_type": {
+                       "id": 3,
+                       "description": "Keywords"
+                   }
+               },
+               {
+                   "id": 92,
+                   "value": "checkTitulo1",
+                   "metadata_type": {
+                       "id": 1,
+                       "description": "Titulo"
+                   }
+               }
+           ]
+        headers: []
+        description: Success
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 8EcaadDPV5bv6Z6f4kg1eh3'
+    controller: null
+    method: null
+    route: null
+    custom: []

@@ -95,24 +95,23 @@ class DocumentService implements IDocumentService
      * requires that temporary file gets created first by calling api/temp_file
      *
      * @param  DocumentSubmitDTO $documentSubmitDTO
-     * @return string
+     * @return int
      */
-    public function submitNewDocument(DocumentSubmitDTO $documentSubmitDTO): string
+    public function submitNewDocument(DocumentSubmitDTO $documentSubmitDTO): int
     {
-        // Validates the post request
-        try {
-            // Checks if folder and filename are sent on the request and file exists in temporary folder
-            // if not, it's likely a temporary file was not submited first
-            request()->temp_document_folder ?? throw new Exception("temp_document_folder missing. Upload a temporary file first with api/temp_file");
-            request()->document_filename ?? throw new Exception("document_filename missing. Upload a temporary file first with api/temp_file");
-            if (!file_exists(storage_path('app/' . env('MEDIA_TEMP_FOLDER') . request()->temp_document_folder . '/' . request()->document_filename))) {
-                throw new Exception("Temporary file missing! Upload a temporary file first with api/temp_file");
-            }
-            // Adds submit common validation rules
-            $this->commonSubmitRules();
-        } catch (\Exception $exception) {
-            return json_encode(['id' => null, 'message' => $exception->getMessage()]);
+        // #################### Validates the post request ###############################
+
+        // Checks if folder and filename are sent on the request and file exists in temporary folder
+        // if not, it's likely a temporary file was not submited first
+        request()->temp_document_folder ?? throw new Exception("temp_document_folder missing. Upload a temporary file first with api/temp_file");
+        request()->document_filename ?? throw new Exception("document_filename missing. Upload a temporary file first with api/temp_file");
+        if (!file_exists(storage_path('app/' . env('MEDIA_TEMP_FOLDER') . request()->temp_document_folder . '/' . request()->document_filename))) {
+            throw new Exception("Temporary file missing! Upload a temporary file first with api/temp_file");
         }
+        // Adds submit common validation rules
+        $this->commonSubmitRules();
+
+        // ###############################################################################
 
         // Sets the default document_state based on the publish_date
         $document_state = ($documentSubmitDTO->publish_date > Carbon::now()) ? 'Pending' : 'Published';
@@ -144,11 +143,7 @@ class DocumentService implements IDocumentService
              This will move the file from it's temporary path to it's path set in variable $path
              and persist the file's metadata to table "media"
         */
-        try {
-            $document->addMedia($path)->toMediaCollection();
-        } catch (\Exception $exception) {
-            return json_encode(['id' => null, 'message' => $exception->getMessage()]);
-        }
+        $document->addMedia($path)->toMediaCollection();
 
         // Delete temporary file database record. (File was already deleted above)
         $temporaryFile->delete();
@@ -156,7 +151,7 @@ class DocumentService implements IDocumentService
         // Delete temporary file folder
         rmdir(storage_path($folder));
 
-        return json_encode(['id' => $document->id, 'message' => 'Submitted']);
+        return $document->id;
     }
 
     /**
@@ -171,17 +166,16 @@ class DocumentService implements IDocumentService
         // Gets the document instance from repository
         $document = $this->repo->getDocumentById($id);
 
-        // Validates the request
-        try {
-            // Throws an exception if the document doesnt exist
-            $document ?? throw new Exception("The document you're trying to edit doesn't exist");
-            // Throws an exception if the user is not the owner of the document and is not an admin
-            (Auth::user()->admin != 'Y' && Auth::user()->id != $document->user_id) ? throw new Exception("You don't have authorization to edit this file") : "";
-            // Adds Common rules validation
-            $this->commonSubmitRules();
-        } catch (\Exception $exception) {
-            return $exception->getMessage();
-        }
+        // ############## Validates the request ########################
+
+        // Throws an exception if the document doesnt exist
+        $document ?? throw new Exception("The document you're trying to edit doesn't exist");
+        // Throws an exception if the user is not the owner of the document and is not an admin
+        (Auth::user()->admin != 'Y' && Auth::user()->id != $document->user_id) ? throw new Exception("You don't have authorization to edit this file") : "";
+        // Adds Common rules validation
+        $this->commonSubmitRules();
+
+        // #############################################################
 
         // Persists the Changes to the document Document
         $document = $this->repo->editDocument($documentSubmitDTO, $document);
@@ -197,11 +191,7 @@ class DocumentService implements IDocumentService
         // If temp_document_foder and document_filename are passed as parameters delete the document and replace it with that temporary file
         if (isset($documentSubmitDTO['temp_document_folder']) && isset($documentSubmitDTO['document_filename'])) {
             // Delete uploaded document
-            try {
-                $document->deleteMedia($document->getFirstMedia()->id);
-            } catch (\Exception $exception) {
-                return $exception;
-            }
+            $document->deleteMedia($document->getFirstMedia()->id);
 
             // Gets temporary file instance from mediaService
             $temporaryFile = $this->mediaService->getTemporaryFileByFolder($documentSubmitDTO['temp_document_folder']);
@@ -215,11 +205,7 @@ class DocumentService implements IDocumentService
                 This will move the file from it's temporary path to it's path set in variable $path
                 and persist the file's metadata to table "media"
             */
-            try {
-                $document->addMedia($path)->toMediaCollection();
-            } catch (\Exception $exception) {
-                return $exception;
-            }
+            $document->addMedia($path)->toMediaCollection();
 
             // Delete temporary file database record. (File was already deleted above)
             $temporaryFile->delete();
@@ -228,7 +214,7 @@ class DocumentService implements IDocumentService
             rmdir(storage_path($folder));
         }
 
-        return "Changes Submitted";
+        return 'Changes Submitted';
     }
 
     /**
@@ -242,25 +228,20 @@ class DocumentService implements IDocumentService
         // Gets the document instance from repository
         $document = $this->repo->getDocumentById($id);
 
-        // Validates the request
-        try {
-            // Throws an exception if the document doesnt exist
-            $document ?? throw new Exception("The document you're trying to delete doesn't exist");
-            // Throws an exception if the user is not the owner of the document and is not an admin
-            (Auth::user()->admin != 'Y' && Auth::user()->id != $document->user_id) ? throw new Exception("You don't have authorization to delete this file") : "";
-        } catch (\Exception $exception) {
-            return $exception->getMessage();
-        }
+        // ################### Validates the request #############################
+
+        // Throws an exception if the document doesnt exist
+        $document ?? throw new Exception("The document you're trying to delete doesn't exist");
+        // Throws an exception if the user is not the owner of the document and is not an admin
+        (Auth::user()->admin != 'Y' && Auth::user()->id != $document->user_id) ? throw new Exception("You don't have authorization to delete this file") : "";
+
+        // #######################################################################
 
         // Commands MetadataService to Delete all the old Metadata to the document
         $this->documentMetadataService->deleteDocumentMetadata($id);
 
         // Delete uploaded document
-        try {
-            $document->deleteMedia($document->getFirstMedia()->id);
-        } catch (\Exception $exception) {
-            //return $exception;
-        }
+        $document->deleteMedia($document->getFirstMedia()->id);
 
         // Hard deletes document
         $document = $this->repo->deleteDocument($id);

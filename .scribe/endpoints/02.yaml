@@ -1,0 +1,61 @@
+name: 'DocumentTypes Endpoints'
+description: |-
+
+  DocumentTypes API endpoint
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/document_types
+    metadata:
+      groupName: 'DocumentTypes Endpoints'
+      groupDescription: |-
+
+        DocumentTypes API endpoint
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'GET All Document Types'
+      description: 'Returns a list of all the document types in the system'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          [
+               {
+                   "id": 90,
+                   "description": "Artigo Cientifico"
+               },
+               {
+                   "id": 91,
+                   "description": "Tese"
+               },
+               {
+                   "id": 92,
+                   "description": "Outro"
+               }
+           ]
+        headers: []
+        description: Success
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer hb4366ce1v5EZkVfP8gdaaD'
+    controller: null
+    method: null
+    route: null
+    custom: []

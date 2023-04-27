@@ -4,6 +4,7 @@ namespace App\ApplicationServices\IServices;
 
 use App\ApplicationServices\DTO\DocumentDTO;
 use App\ApplicationServices\DTO\DocumentSubmitDTO;
+use Ramsey\Uuid\Type\Integer;
 
 interface IDocumentService
 {
@@ -36,9 +37,9 @@ interface IDocumentService
      * requires that temporary file gets created first by calling api/temp_file
      *
      * @param  DocumentSubmitDTO $documentSubmitDTO
-     * @return string
+     * @return int
      */
-    public function submitNewDocument(DocumentSubmitDTO $documentSubmitDTO): string;
+    public function submitNewDocument(DocumentSubmitDTO $documentSubmitDTO): int;
 
     /**
      * Edits document of user, or any document if user is admin

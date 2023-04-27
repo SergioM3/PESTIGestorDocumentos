@@ -1,0 +1,117 @@
+name: 'Authentication Endpoints'
+description: |-
+
+  API to Authenticate User
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/login
+    metadata:
+      groupName: 'Authentication Endpoints'
+      groupDescription: |-
+
+        API to Authenticate User
+      subgroup: ''
+      subgroupDescription: ''
+      title: Login
+      description: 'Logs in with mail and password and returns an API Bearer token'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      mail:
+        name: mail
+        description: ''
+        required: true
+        example: quis
+        type: string
+        custom: []
+      password:
+        name: password
+        description: ''
+        required: true
+        example: qui
+        type: string
+        custom: []
+    cleanBodyParameters:
+      mail: quis
+      password: qui
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "token": "22|Vs1ZekychMxKmQsNlUEGW6pjFTwLCzQ1SxwxEzP1"
+          }
+        headers: []
+        description: Success
+        custom: []
+      -
+        status: 401
+        content: '{"error": "Invalid Credentials"}'
+        headers: []
+        description: 'Wrong Credentials'
+        custom: []
+    responseFields:
+      token:
+        name: token
+        description: 'The Bearer token of API'
+        required: false
+        example: null
+        type: string
+        custom: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6ePkD3gaZEVb4d56cf1hv8a'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/logout
+    metadata:
+      groupName: 'Authentication Endpoints'
+      groupDescription: |-
+
+        API to Authenticate User
+      subgroup: ''
+      subgroupDescription: ''
+      title: Logout
+      description: "Logs out user by destroying it's token"
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '"logged out"'
+        headers: []
+        description: Success
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

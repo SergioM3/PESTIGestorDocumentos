@@ -1,0 +1,3337 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Laravel Documentation</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../docs/css/theme-default.style.css" media="screen">
+    <link rel="stylesheet" href="../docs/css/theme-default.print.css" media="print">
+
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+
+    <link rel="stylesheet"
+          href="https://unpkg.com/@highlightjs/cdn-assets@11.6.0/styles/obsidian.min.css">
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.6.0/highlight.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jets/0.14.1/jets.min.js"></script>
+
+    <style id="language-style">
+        /* starts out as display none and is replaced with js later  */
+                    body .content .javascript-example code { display: none; }
+                    body .content .bash-example code { display: none; }
+                    body .content .php-example code { display: none; }
+                    body .content .python-example code { display: none; }
+            </style>
+
+    <script>
+        var tryItOutBaseUrl = "http://127.0.0.1:8000";
+        var useCsrf = Boolean();
+        var csrfUrl = "/sanctum/csrf-cookie";
+    </script>
+    <script src="../docs/js/tryitout-4.18.0.js"></script>
+
+    <script src="../docs/js/theme-default-4.18.0.js"></script>
+
+</head>
+
+<body data-languages="[&quot;javascript&quot;,&quot;bash&quot;,&quot;php&quot;,&quot;python&quot;]">
+
+<a href="#" id="nav-button">
+    <span>
+        MENU
+        <img src="../docs/images/navbar.png" alt="navbar-image"/>
+    </span>
+</a>
+<div class="tocify-wrapper">
+    
+            <div class="lang-selector">
+                                            <button type="button" class="lang-button" data-language-name="javascript">javascript</button>
+                                            <button type="button" class="lang-button" data-language-name="bash">bash</button>
+                                            <button type="button" class="lang-button" data-language-name="php">php</button>
+                                            <button type="button" class="lang-button" data-language-name="python">python</button>
+                    </div>
+    
+    <div class="search">
+        <input type="text" class="search" id="input-search" placeholder="Search">
+    </div>
+
+    <div id="toc">
+                    <ul id="tocify-header-introduction" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="introduction">
+                    <a href="#introduction">Introduction</a>
+                </li>
+                            </ul>
+                    <ul id="tocify-header-authenticating-requests" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="authenticating-requests">
+                    <a href="#authenticating-requests">Authenticating requests</a>
+                </li>
+                            </ul>
+                    <ul id="tocify-header-authentication-endpoints" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="authentication-endpoints">
+                    <a href="#authentication-endpoints">Authentication Endpoints</a>
+                </li>
+                                    <ul id="tocify-subheader-authentication-endpoints" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="authentication-endpoints-POSTapi-login">
+                                <a href="#authentication-endpoints-POSTapi-login">Login</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="authentication-endpoints-POSTapi-logout">
+                                <a href="#authentication-endpoints-POSTapi-logout">Logout</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
+                    <ul id="tocify-header-documentinternal-endpoints" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="documentinternal-endpoints">
+                    <a href="#documentinternal-endpoints">Document(Internal) Endpoints</a>
+                </li>
+                                    <ul id="tocify-subheader-documentinternal-endpoints" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="documentinternal-endpoints-GETapi-document--id-">
+                                <a href="#documentinternal-endpoints-GETapi-document--id-">GET Documents By id</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="documentinternal-endpoints-GETapi-document-list">
+                                <a href="#documentinternal-endpoints-GETapi-document-list">GET Documents List</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="documentinternal-endpoints-GETapi-document-list--userId-">
+                                <a href="#documentinternal-endpoints-GETapi-document-list--userId-">GET Documents by User</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="documentinternal-endpoints-POSTapi-document">
+                                <a href="#documentinternal-endpoints-POSTapi-document">POST Submit Document</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="documentinternal-endpoints-PUTapi-document--id-">
+                                <a href="#documentinternal-endpoints-PUTapi-document--id-">PUT Edit Document</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="documentinternal-endpoints-DELETEapi-document--id-">
+                                <a href="#documentinternal-endpoints-DELETEapi-document--id-">DELETE Document</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="documentinternal-endpoints-POSTapi-temp_file">
+                                <a href="#documentinternal-endpoints-POSTapi-temp_file">POST Upload Temporary File</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
+                    <ul id="tocify-header-documentmetadata-endpoints" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="documentmetadata-endpoints">
+                    <a href="#documentmetadata-endpoints">DocumentMetadata Endpoints</a>
+                </li>
+                                    <ul id="tocify-subheader-documentmetadata-endpoints" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="documentmetadata-endpoints-GETapi-document_meta_data--id-">
+                                <a href="#documentmetadata-endpoints-GETapi-document_meta_data--id-">GET DocumentMetadata</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
+                    <ul id="tocify-header-documenttypes-endpoints" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="documenttypes-endpoints">
+                    <a href="#documenttypes-endpoints">DocumentTypes Endpoints</a>
+                </li>
+                                    <ul id="tocify-subheader-documenttypes-endpoints" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="documenttypes-endpoints-GETapi-document_types">
+                                <a href="#documenttypes-endpoints-GETapi-document_types">GET All Document Types</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
+                    <ul id="tocify-header-other-undocumented-endpoints" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="other-undocumented-endpoints">
+                    <a href="#other-undocumented-endpoints">Other Undocumented Endpoints</a>
+                </li>
+                                    <ul id="tocify-subheader-other-undocumented-endpoints" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="other-undocumented-endpoints-GETapi-zenodo-document--id-">
+                                <a href="#other-undocumented-endpoints-GETapi-zenodo-document--id-">GET api/zenodo-document/{id}</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="other-undocumented-endpoints-GETapi-zenodo-document">
+                                <a href="#other-undocumented-endpoints-GETapi-zenodo-document">GET api/zenodo-document</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
+            </div>
+
+    <ul class="toc-footer" id="toc-footer">
+                            <li style="padding-bottom: 5px;"><a href="../docs/openapi.yaml">View OpenAPI spec</a></li>
+                <li><a href="http://github.com/knuckleswtf/scribe">Documentation powered by Scribe ✍</a></li>
+    </ul>
+
+    <ul class="toc-footer" id="last-updated">
+        <li>Last updated: April 27, 2023</li>
+    </ul>
+</div>
+
+<div class="page-wrapper">
+    <div class="dark-box"></div>
+    <div class="content">
+        <h1 id="introduction">Introduction</h1>
+<p>Scientific Documents Manager</p>
+<aside>
+    <strong>Base URL</strong>: <code>http://127.0.0.1:8000</code>
+</aside>
+<p>This documentation aims to provide all the information you need to work with our API.</p>
+<aside>As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
+You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).</aside>
+
+        <h1 id="authenticating-requests">Authenticating requests</h1>
+<p>To authenticate requests, include an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {YOUR_AUTH_KEY}"</code></strong>.</p>
+<p>All authenticated endpoints are marked with a <code>requires authentication</code> badge in the documentation below.</p>
+<p>You can retrieve the user token by using the api/login.</p>
+
+        <h1 id="authentication-endpoints">Authentication Endpoints</h1>
+
+    <p>API to Authenticate User</p>
+
+                                <h2 id="authentication-endpoints-POSTapi-login">Login</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Logs in with mail and password and returns an API Bearer token</p>
+
+<span id="example-requests-POSTapi-login">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/login"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "mail": "quis",
+    "password": "qui"
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://127.0.0.1:8000/api/login" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"mail\": \"quis\",
+    \"password\": \"qui\"
+}"
+</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;post(
+    'http://127.0.0.1:8000/api/login',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'mail' =&gt; 'quis',
+            'password' =&gt; 'qui',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://127.0.0.1:8000/api/login'
+payload = {
+    "mail": "quis",
+    "password": "qui"
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-login">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;token&quot;: &quot;22|Vs1ZekychMxKmQsNlUEGW6pjFTwLCzQ1SxwxEzP1&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, Wrong Credentials):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;Invalid Credentials&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-login" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-login"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-login"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-login" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-login">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-login" data-method="POST"
+      data-path="api/login"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-login', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-login"
+                    onclick="tryItOut('POSTapi-login');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-login"
+                    onclick="cancelTryOut('POSTapi-login');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-login"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/login</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Authorization" class="auth-value"               data-endpoint="POSTapi-login"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="POSTapi-login"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="POSTapi-login"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>mail</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="mail"                data-endpoint="POSTapi-login"
+               value="quis"
+               data-component="body">
+    <br>
+<p>Example: <code>quis</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>password</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="password"                data-endpoint="POSTapi-login"
+               value="qui"
+               data-component="body">
+    <br>
+<p>Example: <code>qui</code></p>
+        </div>
+        </form>
+
+    <h3>Response</h3>
+    <h4 class="fancy-heading-panel"><b>Response Fields</b></h4>
+    <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>token</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+<br>
+<p>The Bearer token of API</p>
+        </div>
+                        <h2 id="authentication-endpoints-POSTapi-logout">Logout</h2>
+
+<p>
+</p>
+
+<p>Logs out user by destroying it's token</p>
+
+<span id="example-requests-POSTapi-logout">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/logout"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://127.0.0.1:8000/api/logout" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;post(
+    'http://127.0.0.1:8000/api/logout',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://127.0.0.1:8000/api/logout'
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-logout">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">&quot;logged out&quot;</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-logout" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-logout"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-logout"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-logout" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-logout">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-logout" data-method="POST"
+      data-path="api/logout"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-logout', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-logout"
+                    onclick="tryItOut('POSTapi-logout');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-logout"
+                    onclick="cancelTryOut('POSTapi-logout');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-logout"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/logout</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="POSTapi-logout"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="POSTapi-logout"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                <h1 id="documentinternal-endpoints">Document(Internal) Endpoints</h1>
+
+    <p>Document API endpoint</p>
+
+                                <h2 id="documentinternal-endpoints-GETapi-document--id-">GET Documents By id</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns document details by it's id</p>
+
+<span id="example-requests-GETapi-document--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/document/6"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://127.0.0.1:8000/api/document/6" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://127.0.0.1:8000/api/document/6',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://127.0.0.1:8000/api/document/6'
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-document--id-">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+     &quot;id&quot;: 53,
+     &quot;user_id&quot;: 6,
+     &quot;document_state&quot;: &quot;Pending&quot;,
+     &quot;publish_date&quot;: &quot;2025-12-22 18:00:11&quot;,
+     &quot;create_date&quot;: &quot;2023-04-26 14:25:04&quot;,
+     &quot;update_date&quot;: null,
+     &quot;delete_date&quot;: null,
+     &quot;document_type&quot;: {
+         &quot;id&quot;: 1,
+         &quot;description&quot;: &quot;Artigo Cientifico&quot;
+     },
+     &quot;document_metadata&quot;: [
+         {
+             &quot;id&quot;: 355,
+             &quot;value&quot;: &quot;quis&quot;,
+             &quot;metadata_type&quot;: {
+                 &quot;id&quot;: 1,
+                 &quot;description&quot;: &quot;Titulo&quot;
+             }
+         },
+         {
+             &quot;id&quot;: 356,
+             &quot;value&quot;: &quot;laudantium&quot;,
+             &quot;metadata_type&quot;: {
+                 &quot;id&quot;: 2,
+                 &quot;description&quot;: &quot;Abstract&quot;
+             }
+         }
+     ],
+     &quot;document_media&quot;: {
+         &quot;id&quot;: 67,
+         &quot;model_type&quot;: &quot;App\\Domain\\Aggregates\\Document\\Document&quot;,
+         &quot;model_id&quot;: 53,
+         &quot;uuid&quot;: &quot;c6dd8e46-e8c6-4041-bc7f-cf86dcc7d6be&quot;,
+         &quot;collection_name&quot;: &quot;default&quot;,
+         &quot;name&quot;: &quot;book&quot;,
+         &quot;file_name&quot;: &quot;book.pdf&quot;,
+         &quot;mime_type&quot;: &quot;text/plain&quot;,
+         &quot;disk&quot;: &quot;media&quot;,
+         &quot;conversions_disk&quot;: &quot;media&quot;,
+         &quot;size&quot;: 407608,
+         &quot;manipulations&quot;: [],
+         &quot;custom_properties&quot;: [],
+         &quot;generated_conversions&quot;: [],
+         &quot;responsive_images&quot;: [],
+         &quot;order_column&quot;: 1,
+         &quot;created_at&quot;: &quot;2023-04-26T14:25:04.000000Z&quot;,
+         &quot;updated_at&quot;: &quot;2023-04-26T14:25:04.000000Z&quot;,
+         &quot;original_url&quot;: &quot;/storage/67/book.pdf&quot;,
+         &quot;preview_url&quot;: &quot;&quot;
+     },
+     &quot;document_file&quot;:
+         &quot;JVBERi0xLjINJeLjz9MNCjY2IDAgb2JqDTw8I
+          MyBdIA0vTCAyMjkxNTYgDS9FIDIwMzU3IA0vT
+          ICAgICAgICAgICAgICAgICAgICAgICAgICAgI
+          MDAwMDE2IDAwMDAwIG4NCjAwMDAwMDExNDggM
+          OTU3IDAwMDAwIG4NCjAwMDAwMDIxNjYgMDAwM
+          IDAwMDAwIG4NCjAwMDAwMDM5MDAgMDAwMDAgb
+          MDAwIG4NCjAwMDAwMDUwOTkgMDAwMDAgbg0==&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-document--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-document--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-document--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-document--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-document--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-document--id-" data-method="GET"
+      data-path="api/document/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-document--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-document--id-"
+                    onclick="tryItOut('GETapi-document--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-document--id-"
+                    onclick="cancelTryOut('GETapi-document--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-document--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/document/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Authorization" class="auth-value"               data-endpoint="GETapi-document--id-"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-document--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-document--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               name="id"                data-endpoint="GETapi-document--id-"
+               value="6"
+               data-component="url">
+    <br>
+<p>The id of the document. Example: <code>6</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="documentinternal-endpoints-GETapi-document-list">GET Documents List</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns a document list of all documents if user is admin, otherwise just published documents</p>
+
+<span id="example-requests-GETapi-document-list">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/document-list"
+);
+
+const params = {
+    "title": "Titulo 1",
+    "abstract": "Abstract 1",
+    "document_state": "Published",
+    "document_type": "Artigo Cientifico",
+    "publish_date_from": "2020-12-22",
+    "publish_date_to": "2026-12-22",
+    "page": "1",
+    "page_size": "10",
+    "orderBy": "source",
+    "orderDir": "0",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://127.0.0.1:8000/api/document-list?title=Titulo+1&amp;abstract=Abstract+1&amp;document_state=Published&amp;document_type=Artigo+Cientifico&amp;publish_date_from=2020-12-22&amp;publish_date_to=2026-12-22&amp;page=1&amp;page_size=10&amp;orderBy=source&amp;orderDir=0" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://127.0.0.1:8000/api/document-list',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'title' =&gt; 'Titulo 1',
+            'abstract' =&gt; 'Abstract 1',
+            'document_state' =&gt; 'Published',
+            'document_type' =&gt; 'Artigo Cientifico',
+            'publish_date_from' =&gt; '2020-12-22',
+            'publish_date_to' =&gt; '2026-12-22',
+            'page' =&gt; '1',
+            'page_size' =&gt; '10',
+            'orderBy' =&gt; 'source',
+            'orderDir' =&gt; '0',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://127.0.0.1:8000/api/document-list'
+params = {
+  'title': 'Titulo 1',
+  'abstract': 'Abstract 1',
+  'document_state': 'Published',
+  'document_type': 'Artigo Cientifico',
+  'publish_date_from': '2020-12-22',
+  'publish_date_to': '2026-12-22',
+  'page': '1',
+  'page_size': '10',
+  'orderBy': 'source',
+  'orderDir': '0',
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers, params=params)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-document-list">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;id&quot;: 35,
+    &quot;user_id&quot;: 6,
+    &quot;document_state&quot;: &quot;Pending&quot;,
+    &quot;publish_date&quot;: &quot;2025-12-22 18:00:11&quot;,
+    &quot;document_type&quot;: &quot;Artigo Cientifico&quot;,
+    &quot;document_title&quot;: &quot;Titulo de documento&quot;,
+    &quot;doi&quot;: null,
+    &quot;url&quot;: null,
+    &quot;source&quot;: &quot;Internal&quot;,
+    &quot;document_abstract&quot;: &quot;quis&quot;,
+    &quot;document_keywords&quot;: [
+        &quot;laudantium&quot;
+    ],
+    &quot;document_authors&quot;: []
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-document-list" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-document-list"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-document-list"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-document-list" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-document-list">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-document-list" data-method="GET"
+      data-path="api/document-list"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-document-list', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-document-list"
+                    onclick="tryItOut('GETapi-document-list');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-document-list"
+                    onclick="cancelTryOut('GETapi-document-list');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-document-list"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/document-list</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Authorization" class="auth-value"               data-endpoint="GETapi-document-list"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-document-list"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-document-list"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>userId</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               name="userId"                data-endpoint="GETapi-document-list"
+               value="6"
+               data-component="url">
+    <br>
+<p>The id of the user. Example: <code>6</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>title</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="title"                data-endpoint="GETapi-document-list"
+               value="Titulo 1"
+               data-component="query">
+    <br>
+<p>Filters documents by title. Example: <code>Titulo 1</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>abstract</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="abstract"                data-endpoint="GETapi-document-list"
+               value="Abstract 1"
+               data-component="query">
+    <br>
+<p>Filters documents by abstract. Example: <code>Abstract 1</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>document_state</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="document_state"                data-endpoint="GETapi-document-list"
+               value="Published"
+               data-component="query">
+    <br>
+<p>Filters documents by it's state (Accepted Published and Pending only). Example: <code>Published</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>document_type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="document_type"                data-endpoint="GETapi-document-list"
+               value="Artigo Cientifico"
+               data-component="query">
+    <br>
+<p>Filters documents by it's type. Example: <code>Artigo Cientifico</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>publish_date_from</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="publish_date_from"                data-endpoint="GETapi-document-list"
+               value="2020-12-22"
+               data-component="query">
+    <br>
+<p>datetime Filters to return only documents published after this date. Example: <code>2020-12-22</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>publish_date_to</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="publish_date_to"                data-endpoint="GETapi-document-list"
+               value="2026-12-22"
+               data-component="query">
+    <br>
+<p>datetime Filters to return only documents published before this date. Example: <code>2026-12-22</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               name="page"                data-endpoint="GETapi-document-list"
+               value="1"
+               data-component="query">
+    <br>
+<p>Pagination -&gt; number of the page to see. Example: <code>1</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page_size</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               name="page_size"                data-endpoint="GETapi-document-list"
+               value="10"
+               data-component="query">
+    <br>
+<p>Pagination -&gt; number of documents to see per page. Example: <code>10</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>orderBy</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="orderBy"                data-endpoint="GETapi-document-list"
+               value="source"
+               data-component="query">
+    <br>
+<p>Sorting -&gt; Field by which documents are sorted. Example: <code>source</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>orderDir</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               name="orderDir"                data-endpoint="GETapi-document-list"
+               value="0"
+               data-component="query">
+    <br>
+<p>Sorting -&gt; Sorting direction. Example: <code>0</code></p>
+            </div>
+                </form>
+
+                    <h2 id="documentinternal-endpoints-GETapi-document-list--userId-">GET Documents by User</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Gets document list of all documents owned by a specified user</p>
+
+<span id="example-requests-GETapi-document-list--userId-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/document-list/6"
+);
+
+const params = {
+    "title": "Titulo 1",
+    "abstract": "Abstract 1",
+    "document_state": "Published",
+    "document_type": "Artigo Cientifico",
+    "publish_date_from": "2020-12-22",
+    "publish_date_to": "2026-12-22",
+    "page": "1",
+    "page_size": "10",
+    "orderBy": "source",
+    "orderDir": "0",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://127.0.0.1:8000/api/document-list/6?title=Titulo+1&amp;abstract=Abstract+1&amp;document_state=Published&amp;document_type=Artigo+Cientifico&amp;publish_date_from=2020-12-22&amp;publish_date_to=2026-12-22&amp;page=1&amp;page_size=10&amp;orderBy=source&amp;orderDir=0" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://127.0.0.1:8000/api/document-list/6',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'title' =&gt; 'Titulo 1',
+            'abstract' =&gt; 'Abstract 1',
+            'document_state' =&gt; 'Published',
+            'document_type' =&gt; 'Artigo Cientifico',
+            'publish_date_from' =&gt; '2020-12-22',
+            'publish_date_to' =&gt; '2026-12-22',
+            'page' =&gt; '1',
+            'page_size' =&gt; '10',
+            'orderBy' =&gt; 'source',
+            'orderDir' =&gt; '0',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://127.0.0.1:8000/api/document-list/6'
+params = {
+  'title': 'Titulo 1',
+  'abstract': 'Abstract 1',
+  'document_state': 'Published',
+  'document_type': 'Artigo Cientifico',
+  'publish_date_from': '2020-12-22',
+  'publish_date_to': '2026-12-22',
+  'page': '1',
+  'page_size': '10',
+  'orderBy': 'source',
+  'orderDir': '0',
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers, params=params)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-document-list--userId-">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;id&quot;: 35,
+    &quot;user_id&quot;: 6,
+    &quot;document_state&quot;: &quot;Pending&quot;,
+    &quot;publish_date&quot;: &quot;2025-12-22 18:00:11&quot;,
+    &quot;document_type&quot;: &quot;Artigo Cientifico&quot;,
+    &quot;document_title&quot;: &quot;Titulo de documento&quot;,
+    &quot;doi&quot;: null,
+    &quot;url&quot;: null,
+    &quot;source&quot;: &quot;Internal&quot;,
+    &quot;document_abstract&quot;: &quot;quis&quot;,
+    &quot;document_keywords&quot;: [
+        &quot;laudantium&quot;
+    ],
+    &quot;document_authors&quot;: []
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-document-list--userId-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-document-list--userId-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-document-list--userId-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-document-list--userId-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-document-list--userId-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-document-list--userId-" data-method="GET"
+      data-path="api/document-list/{userId}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-document-list--userId-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-document-list--userId-"
+                    onclick="tryItOut('GETapi-document-list--userId-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-document-list--userId-"
+                    onclick="cancelTryOut('GETapi-document-list--userId-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-document-list--userId-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/document-list/{userId}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Authorization" class="auth-value"               data-endpoint="GETapi-document-list--userId-"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-document-list--userId-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-document-list--userId-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>userId</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               name="userId"                data-endpoint="GETapi-document-list--userId-"
+               value="6"
+               data-component="url">
+    <br>
+<p>The id of the user. Example: <code>6</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>title</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="title"                data-endpoint="GETapi-document-list--userId-"
+               value="Titulo 1"
+               data-component="query">
+    <br>
+<p>Filters documents by title. Example: <code>Titulo 1</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>abstract</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="abstract"                data-endpoint="GETapi-document-list--userId-"
+               value="Abstract 1"
+               data-component="query">
+    <br>
+<p>Filters documents by abstract. Example: <code>Abstract 1</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>document_state</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="document_state"                data-endpoint="GETapi-document-list--userId-"
+               value="Published"
+               data-component="query">
+    <br>
+<p>Filters documents by it's state (Accepted Published and Pending only). Example: <code>Published</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>document_type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="document_type"                data-endpoint="GETapi-document-list--userId-"
+               value="Artigo Cientifico"
+               data-component="query">
+    <br>
+<p>Filters documents by it's type. Example: <code>Artigo Cientifico</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>publish_date_from</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="publish_date_from"                data-endpoint="GETapi-document-list--userId-"
+               value="2020-12-22"
+               data-component="query">
+    <br>
+<p>datetime Filters to return only documents published after this date. Example: <code>2020-12-22</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>publish_date_to</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="publish_date_to"                data-endpoint="GETapi-document-list--userId-"
+               value="2026-12-22"
+               data-component="query">
+    <br>
+<p>datetime Filters to return only documents published before this date. Example: <code>2026-12-22</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               name="page"                data-endpoint="GETapi-document-list--userId-"
+               value="1"
+               data-component="query">
+    <br>
+<p>Pagination -&gt; number of the page to see. Example: <code>1</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page_size</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               name="page_size"                data-endpoint="GETapi-document-list--userId-"
+               value="10"
+               data-component="query">
+    <br>
+<p>Pagination -&gt; number of documents to see per page. Example: <code>10</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>orderBy</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="orderBy"                data-endpoint="GETapi-document-list--userId-"
+               value="source"
+               data-component="query">
+    <br>
+<p>Sorting -&gt; Field by which documents are sorted. Example: <code>source</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>orderDir</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               name="orderDir"                data-endpoint="GETapi-document-list--userId-"
+               value="0"
+               data-component="query">
+    <br>
+<p>Sorting -&gt; Sorting direction. Example: <code>0</code></p>
+            </div>
+                </form>
+
+                    <h2 id="documentinternal-endpoints-POSTapi-document">POST Submit Document</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Submits document.
+MUST first upload temporary file with api/temp_file</p>
+
+<span id="example-requests-POSTapi-document">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/document"
+);
+
+const params = {
+    "temp_document_folder": "6449343e3d09e-1682519102",
+    "document_filename": "document.pdf",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "document_type_id": 1,
+    "publish_date": "2025-12-22 18:00:11",
+    "document_metadata": [
+        {
+            "value": "quis",
+            "metadata_type": {
+                "id": 1,
+                "description": "Title 1"
+            }
+        },
+        {
+            "value": "laudantium",
+            "metadata_type": {
+                "id": 2,
+                "description": "abstract 1"
+            }
+        }
+    ]
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://127.0.0.1:8000/api/document?temp_document_folder=6449343e3d09e-1682519102&amp;document_filename=document.pdf" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"document_type_id\": 1,
+    \"publish_date\": \"2025-12-22 18:00:11\",
+    \"document_metadata\": [
+        {
+            \"value\": \"quis\",
+            \"metadata_type\": {
+                \"id\": 1,
+                \"description\": \"Title 1\"
+            }
+        },
+        {
+            \"value\": \"laudantium\",
+            \"metadata_type\": {
+                \"id\": 2,
+                \"description\": \"abstract 1\"
+            }
+        }
+    ]
+}"
+</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;post(
+    'http://127.0.0.1:8000/api/document',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'temp_document_folder' =&gt; '6449343e3d09e-1682519102',
+            'document_filename' =&gt; 'document.pdf',
+        ],
+        'json' =&gt; \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+            $o = [
+                clone (($p = &amp;\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['stdClass'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('stdClass')),
+                clone $p['stdClass'],
+                clone $p['stdClass'],
+                clone $p['stdClass'],
+            ],
+            null,
+            [
+                'stdClass' =&gt; [
+                    'value' =&gt; [
+                        'quis',
+                        2 =&gt; 'laudantium',
+                    ],
+                    'metadata_type' =&gt; [
+                        $o[1],
+                        2 =&gt; $o[3],
+                    ],
+                    'id' =&gt; [
+                        1 =&gt; 1,
+                        3 =&gt; 2,
+                    ],
+                    'description' =&gt; [
+                        1 =&gt; 'Title 1',
+                        3 =&gt; 'abstract 1',
+                    ],
+                ],
+            ],
+            [
+                'document_type_id' =&gt; 1,
+                'publish_date' =&gt; '2025-12-22 18:00:11',
+                'document_metadata' =&gt; [
+                    $o[0],
+                    $o[2],
+                ],
+            ],
+            []
+        ),
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://127.0.0.1:8000/api/document'
+payload = {
+    "document_type_id": 1,
+    "publish_date": "2025-12-22 18:00:11",
+    "document_metadata": [
+        {
+            "value": "quis",
+            "metadata_type": {
+                "id": 1,
+                "description": "Title 1"
+            }
+        },
+        {
+            "value": "laudantium",
+            "metadata_type": {
+                "id": 2,
+                "description": "abstract 1"
+            }
+        }
+    ]
+}
+params = {
+  'temp_document_folder': '6449343e3d09e-1682519102',
+  'document_filename': 'document.pdf',
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload, params=params)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-document">
+            <blockquote>
+            <p>Example response (201, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+     &quot;id&quot; : 302
+     &quot;message&quot; : &quot;Document Submited&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Temp folder missing):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;temp_document_folder missing. Upload a temporary file first with api/temp_file&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Temp filename missing):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;document_filename missing. Upload a temporary file first with api/temp_file&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Temp file given not in temp foder):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;Temporary file missing! Upload a temporary file first with api/temp_file&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, No title):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;You&#039;re document MUST have a title!&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Multiple titles):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;You&#039;re document CAN ONLY have ONE title!&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Multiple Abstracts):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;You&#039;re document CAN ONLY have ONE abstract!&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-document" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-document"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-document"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-document" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-document">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-document" data-method="POST"
+      data-path="api/document"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-document', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-document"
+                    onclick="tryItOut('POSTapi-document');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-document"
+                    onclick="cancelTryOut('POSTapi-document');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-document"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/document</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Authorization" class="auth-value"               data-endpoint="POSTapi-document"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="POSTapi-document"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="POSTapi-document"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>temp_document_folder</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="temp_document_folder"                data-endpoint="POSTapi-document"
+               value="6449343e3d09e-1682519102"
+               data-component="query">
+    <br>
+<p>Sub-folder within temp folder where the file was temporarily uploaded to. Example: <code>6449343e3d09e-1682519102</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>document_filename</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="document_filename"                data-endpoint="POSTapi-document"
+               value="document.pdf"
+               data-component="query">
+    <br>
+<p>File name of the temporary file uploaded. Example: <code>document.pdf</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>document_type_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               name="document_type_id"                data-endpoint="POSTapi-document"
+               value="1"
+               data-component="body">
+    <br>
+<p>ID of the document (Full list of ids can be retreived with api/document_types). Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>publish_date</code></b>&nbsp;&nbsp;
+<small>datetime</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="publish_date"                data-endpoint="POSTapi-document"
+               value="2025-12-22 18:00:11"
+               data-component="body">
+    <br>
+<p>Publish date of the document. Example: <code>2025-12-22 18:00:11</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>document_metadata</code></b>&nbsp;&nbsp;
+<small>object[]</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="document_metadata[0]"                data-endpoint="POSTapi-document"
+               data-component="body">
+        <input type="text" style="display: none"
+               name="document_metadata[1]"                data-endpoint="POSTapi-document"
+               data-component="body">
+    <br>
+<p>Document metadata. MUST HAVE AT LEAST A TITLE (id=1)</p>
+        </div>
+        </form>
+
+                    <h2 id="documentinternal-endpoints-PUTapi-document--id-">PUT Edit Document</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Edits document.</p>
+
+<span id="example-requests-PUTapi-document--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/document/6"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "document_type_id": 1,
+    "publish_date": "2025-12-22 18:00:11",
+    "document_metadata": [
+        {
+            "value": "quis",
+            "metadata_type": {
+                "id": 1,
+                "description": "Title 1"
+            }
+        },
+        {
+            "value": "laudantium",
+            "metadata_type": {
+                "id": 2,
+                "description": "abstract 1"
+            }
+        }
+    ]
+};
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request PUT \
+    "http://127.0.0.1:8000/api/document/6" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"document_type_id\": 1,
+    \"publish_date\": \"2025-12-22 18:00:11\",
+    \"document_metadata\": [
+        {
+            \"value\": \"quis\",
+            \"metadata_type\": {
+                \"id\": 1,
+                \"description\": \"Title 1\"
+            }
+        },
+        {
+            \"value\": \"laudantium\",
+            \"metadata_type\": {
+                \"id\": 2,
+                \"description\": \"abstract 1\"
+            }
+        }
+    ]
+}"
+</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;put(
+    'http://127.0.0.1:8000/api/document/6',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+            $o = [
+                clone (($p = &amp;\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['stdClass'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('stdClass')),
+                clone $p['stdClass'],
+                clone $p['stdClass'],
+                clone $p['stdClass'],
+            ],
+            null,
+            [
+                'stdClass' =&gt; [
+                    'value' =&gt; [
+                        'quis',
+                        2 =&gt; 'laudantium',
+                    ],
+                    'metadata_type' =&gt; [
+                        $o[1],
+                        2 =&gt; $o[3],
+                    ],
+                    'id' =&gt; [
+                        1 =&gt; 1,
+                        3 =&gt; 2,
+                    ],
+                    'description' =&gt; [
+                        1 =&gt; 'Title 1',
+                        3 =&gt; 'abstract 1',
+                    ],
+                ],
+            ],
+            [
+                'document_type_id' =&gt; 1,
+                'publish_date' =&gt; '2025-12-22 18:00:11',
+                'document_metadata' =&gt; [
+                    $o[0],
+                    $o[2],
+                ],
+            ],
+            []
+        ),
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://127.0.0.1:8000/api/document/6'
+payload = {
+    "document_type_id": 1,
+    "publish_date": "2025-12-22 18:00:11",
+    "document_metadata": [
+        {
+            "value": "quis",
+            "metadata_type": {
+                "id": 1,
+                "description": "Title 1"
+            }
+        },
+        {
+            "value": "laudantium",
+            "metadata_type": {
+                "id": 2,
+                "description": "abstract 1"
+            }
+        }
+    ]
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('PUT', url, headers=headers, json=payload)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-PUTapi-document--id-">
+            <blockquote>
+            <p>Example response (201, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Changes Submited&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Document ID doesnt exist):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;The document you&#039;re trying to edit doesn&#039;t exist&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, No title):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;You&#039;re document MUST have a title!&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Multiple titles):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;You&#039;re document CAN ONLY have ONE title!&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Multiple Abstracts):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;You&#039;re document CAN ONLY have ONE abstract!&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403, Not document owner nor Admin):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;You don&#039;t have authorization to edit this file&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-PUTapi-document--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTapi-document--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTapi-document--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-PUTapi-document--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTapi-document--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-PUTapi-document--id-" data-method="PUT"
+      data-path="api/document/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTapi-document--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTapi-document--id-"
+                    onclick="tryItOut('PUTapi-document--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTapi-document--id-"
+                    onclick="cancelTryOut('PUTapi-document--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTapi-document--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>api/document/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Authorization" class="auth-value"               data-endpoint="PUTapi-document--id-"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="PUTapi-document--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="PUTapi-document--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               name="id"                data-endpoint="PUTapi-document--id-"
+               value="6"
+               data-component="url">
+    <br>
+<p>The id of the document. Example: <code>6</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>document_type_id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               name="document_type_id"                data-endpoint="PUTapi-document--id-"
+               value="1"
+               data-component="body">
+    <br>
+<p>ID of the document (Full list of ids can be retreived with api/document_types). Example: <code>1</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>publish_date</code></b>&nbsp;&nbsp;
+<small>datetime</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="publish_date"                data-endpoint="PUTapi-document--id-"
+               value="2025-12-22 18:00:11"
+               data-component="body">
+    <br>
+<p>Publish date of the document. Example: <code>2025-12-22 18:00:11</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>document_metadata</code></b>&nbsp;&nbsp;
+<small>object[]</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+               name="document_metadata[0]"                data-endpoint="PUTapi-document--id-"
+               data-component="body">
+        <input type="text" style="display: none"
+               name="document_metadata[1]"                data-endpoint="PUTapi-document--id-"
+               data-component="body">
+    <br>
+<p>Document metadata. MUST HAVE AT LEAST A TITLE (id=1)</p>
+        </div>
+        </form>
+
+                    <h2 id="documentinternal-endpoints-DELETEapi-document--id-">DELETE Document</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>HARD deletes document.
+DO NOT USE if not certain.</p>
+
+<span id="example-requests-DELETEapi-document--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/document/6"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "DELETE",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request DELETE \
+    "http://127.0.0.1:8000/api/document/6" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;delete(
+    'http://127.0.0.1:8000/api/document/6',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://127.0.0.1:8000/api/document/6'
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('DELETE', url, headers=headers)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-DELETEapi-document--id-">
+            <blockquote>
+            <p>Example response (201, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Document Deleted&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Document ID doesnt exist):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;The document you&#039;re trying to delete doesn&#039;t exist&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (403, Not document owner nor Admin):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;error&quot;: &quot;You don&#039;t have authorization to delete this file&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-DELETEapi-document--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-DELETEapi-document--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-DELETEapi-document--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-DELETEapi-document--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-DELETEapi-document--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-DELETEapi-document--id-" data-method="DELETE"
+      data-path="api/document/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('DELETEapi-document--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-DELETEapi-document--id-"
+                    onclick="tryItOut('DELETEapi-document--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-DELETEapi-document--id-"
+                    onclick="cancelTryOut('DELETEapi-document--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-DELETEapi-document--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-red">DELETE</small>
+            <b><code>api/document/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Authorization" class="auth-value"               data-endpoint="DELETEapi-document--id-"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="DELETEapi-document--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="DELETEapi-document--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               name="id"                data-endpoint="DELETEapi-document--id-"
+               value="6"
+               data-component="url">
+    <br>
+<p>The id of the document. Example: <code>6</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="documentinternal-endpoints-POSTapi-temp_file">POST Upload Temporary File</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This endpoint saves a file on the request to a temporary location
+and persists it's meta to a database table</p>
+
+<span id="example-requests-POSTapi-temp_file">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/temp_file"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "multipart/form-data",
+    "Accept": "application/json",
+};
+
+const body = new FormData();
+body.append('upload_file', document.querySelector('input[name="upload_file"]').files[0]);
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://127.0.0.1:8000/api/temp_file" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: multipart/form-data" \
+    --header "Accept: application/json" \
+    --form "upload_file=@C:\Users\Dakilla\AppData\Local\Temp\phpE88D.tmp" </code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;post(
+    'http://127.0.0.1:8000/api/temp_file',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'multipart/form-data',
+            'Accept' =&gt; 'application/json',
+        ],
+        'multipart' =&gt; [
+            [
+                'name' =&gt; 'upload_file',
+                'contents' =&gt; fopen('C:\Users\Dakilla\AppData\Local\Temp\phpE88D.tmp', 'r')
+            ],
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://127.0.0.1:8000/api/temp_file'
+files = {
+  'upload_file': open('C:\Users\Dakilla\AppData\Local\Temp\phpE88D.tmp', 'rb')
+}
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'multipart/form-data',
+  'Accept': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, files=files)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-temp_file">
+            <blockquote>
+            <p>Example response (201, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;folder&quot;: &quot;6449ce12a98dc-1682558482&quot;,
+    &quot;filename&quot;: &quot;book.pdf&quot;,
+    &quot;updated_at&quot;: &quot;2023-04-27T01:21:22.000000Z&quot;,
+    &quot;created_at&quot;: &quot;2023-04-27T01:21:22.000000Z&quot;,
+    &quot;id&quot;: 78
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-temp_file" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-temp_file"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-temp_file"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-temp_file" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-temp_file">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-temp_file" data-method="POST"
+      data-path="api/temp_file"
+      data-authed="1"
+      data-hasfiles="1"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-temp_file', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-temp_file"
+                    onclick="tryItOut('POSTapi-temp_file');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-temp_file"
+                    onclick="cancelTryOut('POSTapi-temp_file');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-temp_file"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/temp_file</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Authorization" class="auth-value"               data-endpoint="POSTapi-temp_file"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="POSTapi-temp_file"
+               value="multipart/form-data"
+               data-component="header">
+    <br>
+<p>Example: <code>multipart/form-data</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="POSTapi-temp_file"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>upload_file</code></b>&nbsp;&nbsp;
+<small>file</small>&nbsp;
+ &nbsp;
+                <input type="file" style="display: none"
+               name="upload_file"                data-endpoint="POSTapi-temp_file"
+               value=""
+               data-component="body">
+    <br>
+<p>The document to upload on the form-data. Example: <code>C:\Users\Dakilla\AppData\Local\Temp\phpE88D.tmp</code></p>
+        </div>
+        </form>
+
+                <h1 id="documentmetadata-endpoints">DocumentMetadata Endpoints</h1>
+
+    <p>DocumentMetadata API endpoint</p>
+
+                                <h2 id="documentmetadata-endpoints-GETapi-document_meta_data--id-">GET DocumentMetadata</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns array of meta data objects of a document by it's id</p>
+
+<span id="example-requests-GETapi-document_meta_data--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/document_meta_data/6"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://127.0.0.1:8000/api/document_meta_data/6" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://127.0.0.1:8000/api/document_meta_data/6',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://127.0.0.1:8000/api/document_meta_data/6'
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-document_meta_data--id-">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">[
+    {
+        &quot;id&quot;: 90,
+        &quot;value&quot;: &quot;quis&quot;,
+        &quot;metadata_type&quot;: {
+            &quot;id&quot;: 2,
+            &quot;description&quot;: &quot;Abstract&quot;
+        }
+    },
+    {
+        &quot;id&quot;: 91,
+        &quot;value&quot;: &quot;keyword2&quot;,
+        &quot;metadata_type&quot;: {
+            &quot;id&quot;: 3,
+            &quot;description&quot;: &quot;Keywords&quot;
+        }
+    },
+    {
+        &quot;id&quot;: 92,
+        &quot;value&quot;: &quot;checkTitulo1&quot;,
+        &quot;metadata_type&quot;: {
+            &quot;id&quot;: 1,
+            &quot;description&quot;: &quot;Titulo&quot;
+        }
+    }
+]</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-document_meta_data--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-document_meta_data--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-document_meta_data--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-document_meta_data--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-document_meta_data--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-document_meta_data--id-" data-method="GET"
+      data-path="api/document_meta_data/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-document_meta_data--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-document_meta_data--id-"
+                    onclick="tryItOut('GETapi-document_meta_data--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-document_meta_data--id-"
+                    onclick="cancelTryOut('GETapi-document_meta_data--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-document_meta_data--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/document_meta_data/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Authorization" class="auth-value"               data-endpoint="GETapi-document_meta_data--id-"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-document_meta_data--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-document_meta_data--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               name="id"                data-endpoint="GETapi-document_meta_data--id-"
+               value="6"
+               data-component="url">
+    <br>
+<p>The id of the document. Example: <code>6</code></p>
+            </div>
+                    </form>
+
+                <h1 id="documenttypes-endpoints">DocumentTypes Endpoints</h1>
+
+    <p>DocumentTypes API endpoint</p>
+
+                                <h2 id="documenttypes-endpoints-GETapi-document_types">GET All Document Types</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns a list of all the document types in the system</p>
+
+<span id="example-requests-GETapi-document_types">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/document_types"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://127.0.0.1:8000/api/document_types" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://127.0.0.1:8000/api/document_types',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://127.0.0.1:8000/api/document_types'
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-document_types">
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">[
+    {
+        &quot;id&quot;: 90,
+        &quot;description&quot;: &quot;Artigo Cientifico&quot;
+    },
+    {
+        &quot;id&quot;: 91,
+        &quot;description&quot;: &quot;Tese&quot;
+    },
+    {
+        &quot;id&quot;: 92,
+        &quot;description&quot;: &quot;Outro&quot;
+    }
+]</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-document_types" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-document_types"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-document_types"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-document_types" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-document_types">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-document_types" data-method="GET"
+      data-path="api/document_types"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-document_types', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-document_types"
+                    onclick="tryItOut('GETapi-document_types');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-document_types"
+                    onclick="cancelTryOut('GETapi-document_types');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-document_types"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/document_types</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Authorization" class="auth-value"               data-endpoint="GETapi-document_types"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-document_types"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-document_types"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                <h1 id="other-undocumented-endpoints">Other Undocumented Endpoints</h1>
+
+    <p>These endpoints are incomplete or not properly documented</p>
+
+                                <h2 id="other-undocumented-endpoints-GETapi-zenodo-document--id-">GET api/zenodo-document/{id}</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-GETapi-zenodo-document--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/zenodo-document/blanditiis"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://127.0.0.1:8000/api/zenodo-document/blanditiis" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://127.0.0.1:8000/api/zenodo-document/blanditiis',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://127.0.0.1:8000/api/zenodo-document/blanditiis'
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-zenodo-document--id-">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-zenodo-document--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-zenodo-document--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-zenodo-document--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-zenodo-document--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-zenodo-document--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-zenodo-document--id-" data-method="GET"
+      data-path="api/zenodo-document/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-zenodo-document--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-zenodo-document--id-"
+                    onclick="tryItOut('GETapi-zenodo-document--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-zenodo-document--id-"
+                    onclick="cancelTryOut('GETapi-zenodo-document--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-zenodo-document--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/zenodo-document/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Authorization" class="auth-value"               data-endpoint="GETapi-zenodo-document--id-"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-zenodo-document--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-zenodo-document--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="id"                data-endpoint="GETapi-zenodo-document--id-"
+               value="blanditiis"
+               data-component="url">
+    <br>
+<p>The ID of the zenodo document. Example: <code>blanditiis</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="other-undocumented-endpoints-GETapi-zenodo-document">GET api/zenodo-document</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-GETapi-zenodo-document">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/zenodo-document"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://127.0.0.1:8000/api/zenodo-document" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://127.0.0.1:8000/api/zenodo-document',
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+
+<div class="python-example">
+    <pre><code class="language-python">import requests
+import json
+
+url = 'http://127.0.0.1:8000/api/zenodo-document'
+headers = {
+  'Authorization': 'Bearer {YOUR_AUTH_KEY}',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers)
+response.json()</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-zenodo-document">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-zenodo-document" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-zenodo-document"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-zenodo-document"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-zenodo-document" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-zenodo-document">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-zenodo-document" data-method="GET"
+      data-path="api/zenodo-document"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-zenodo-document', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-zenodo-document"
+                    onclick="tryItOut('GETapi-zenodo-document');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-zenodo-document"
+                    onclick="cancelTryOut('GETapi-zenodo-document');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-zenodo-document"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/zenodo-document</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Authorization" class="auth-value"               data-endpoint="GETapi-zenodo-document"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-zenodo-document"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-zenodo-document"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+            
+
+        
+    </div>
+    <div class="dark-box">
+                    <div class="lang-selector">
+                                                        <button type="button" class="lang-button" data-language-name="javascript">javascript</button>
+                                                        <button type="button" class="lang-button" data-language-name="bash">bash</button>
+                                                        <button type="button" class="lang-button" data-language-name="php">php</button>
+                                                        <button type="button" class="lang-button" data-language-name="python">python</button>
+                            </div>
+            </div>
+</div>
+</body>
+</html>

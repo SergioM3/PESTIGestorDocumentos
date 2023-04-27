@@ -11,8 +11,10 @@ use App\ApplicationServices\IServices\IMediaService;
 class MediaService implements IMediaService
 {
     /**
-     * Encrypts file from request form with key and chipher set at config/app.php and then
-     * Saves it to storage/app/env('MEDIA_TEMP_FOLDER')/UniqueFolderName
+     *This service funtion is saving the file on the request to a temporary location : storage/app/uploads
+     * and saving it's meta to a database table "TemporaryFile"
+     * Then it encrypts the file from request form with key and chipher set at config/app.php and then
+     * overwrites it on it to storage/app/env('MEDIA_TEMP_FOLDER')/UniqueFolderName
      *
      * @param  Request $request
      * @return mixed # Can return TemporaryFile if success or string if error

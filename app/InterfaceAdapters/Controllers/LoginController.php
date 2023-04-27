@@ -9,8 +9,24 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Config;
 
+/**
+ * @group Authentication Endpoints
+ *
+ * API to Authenticate User
+ */
 class LoginController extends Controller
 {
+    /**
+     * Login
+     *
+     * Logs in with mail and password and returns an API Bearer token
+     *
+     * @response 200 scenario="Success" {
+     *     "token": "22|Vs1ZekychMxKmQsNlUEGW6pjFTwLCzQ1SxwxEzP1"
+     * }
+     * @response 401 scenario="Wrong Credentials" {"error": "Invalid Credentials"}
+     * @responseField token The Bearer token of API
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -32,7 +48,7 @@ class LoginController extends Controller
                     'token' => $user->createToken(time())->plainTextToken
                 ];
             }
-            return "Invalid Credentials";
+            return response()->json(['error' => "Invalid Credentials"], 401);
         } elseif ($driver === 'eloquent') {
             // Eloquent authentication logic
             $user = User::where('email', $credentials['mail'])->first();
@@ -41,11 +57,20 @@ class LoginController extends Controller
                     'token' => $user->createToken(time())->plainTextToken
                 ];
             }
+            return response()->json(['error' => "Invalid Credentials"], 401);
         } else {
             throw new Exception("Invalid user provider driver specified in configuration.");
         }
     }
 
+    /**
+     * Logout
+     *
+     * Logs out user by destroying it's token
+     *
+     * @unauthenticated
+     * @response 200 scenario="Success" "logged out"
+     */
     public function logout()
     {
         Auth::user()->currentAccessToken()->delete();

@@ -1,0 +1,103 @@
+name: 'Other Undocumented Endpoints'
+description: |-
+
+  These endpoints are incomplete or not properly documented
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: 'api/zenodo-document/{id}'
+    metadata:
+      groupName: 'Other Undocumented Endpoints'
+      groupDescription: |-
+
+        These endpoints are incomplete or not properly documented
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the zenodo document.'
+        required: true
+        example: blanditiis
+        type: string
+        custom: []
+    cleanUrlParameters:
+      id: blanditiis
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer dZ5hEP63kcva68DV4aebfg1'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/zenodo-document
+    metadata:
+      groupName: 'Other Undocumented Endpoints'
+      groupDescription: |-
+
+        These endpoints are incomplete or not properly documented
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer PD56fgaE4Zb1Vdacv8e36hk'
+    controller: null
+    method: null
+    route: null
+    custom: []
