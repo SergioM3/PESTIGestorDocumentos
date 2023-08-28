@@ -1,5 +1,30 @@
 <?php
 
+if (env('USE_LDAP')) {
+    $providers = [
+        'users' => [
+            'driver' => 'ldap',
+            'model' => LdapRecord\Models\OpenLDAP\User::class,
+            'rules' => [],
+            'database' => [
+                'model' => App\Domain\Aggregates\User\User::class,
+                'sync_passwords' => true,
+                'sync_attributes' => [
+                    'name' => 'cn',
+                    'email' => 'mail',
+                ],
+            ],
+        ]
+    ];
+} else {
+    $providers = [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ]
+    ];
+}
+
 return [
 
     /*
@@ -59,25 +84,8 @@ return [
     |
     */
 
-    'providers' => [
-        /*'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],*/
-        'users' => [
-            'driver' => 'ldap',
-            'model' => LdapRecord\Models\OpenLDAP\User::class,
-            'rules' => [],
-            'database' => [
-                'model' => App\Domain\Aggregates\User\User::class,
-                'sync_passwords' => true,
-                'sync_attributes' => [
-                    'name' => 'cn',
-                    'email' => 'mail',
-                ],
-            ],
-        ]
-    ],
+    'providers' => $providers
+    ,
 
     /*
     |--------------------------------------------------------------------------

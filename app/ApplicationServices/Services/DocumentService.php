@@ -45,6 +45,8 @@ class DocumentService implements IDocumentService
 
         // Get Internal Documents - If user is admin, returns pending too, otherwise returns just published documents
         $documents = Auth::user()->admin == 'Y' ? $this->repo->getDocumentsByFilter() : $this->repo->getPublishedDocumentsByFilter();
+
+
         foreach ($documents as $document) {
             $documentDTOs[] = $this->mapper->toListItemDTO($document);
         }
@@ -256,17 +258,19 @@ class DocumentService implements IDocumentService
      */
     private function commonSubmitRules(): void
     {
-        // Gets the count of each document_metadata of the request by metadata_type id
-        $countById = array_count_values(array_column(array_column(request()->document_metadata, 'metadata_type'), 'id'));
+        if (isset(request()->document_metadata)) {
+            // Gets the count of each document_metadata of the request by metadata_type id
+            $countById = array_count_values(array_column(array_column(request()->document_metadata, 'metadata_type'), 'id'));
 
-        // If there's no count with id = 1, means there's no title, and documents must have a title
-        $countById[1] ?? throw new Exception("You're document MUST have a title!");
+            // If there's no count with id = 1, means there's no title, and documents must have a title
+            $countById[1] ?? throw new Exception("You're document MUST have a title!");
 
-        // If title count > 1 throws an error, because there can be only one title
-        $countById[1] > 1 ? throw new Exception("You're document CAN ONLY have ONE title!") : "";
+            // If title count > 1 throws an error, because there can be only one title
+            $countById[1] > 1 ? throw new Exception("You're document CAN ONLY have ONE title!") : "";
 
-        // If abstract count > 1 throws an error, because there can be only one abstract
-        $countById[2] > 1 ? throw new Exception("You're document CAN ONLY have ONE abstract!") : "";
+            // If abstract count > 1 throws an error, because there can be only one abstract
+            $countById[2] > 1 ? throw new Exception("You're document CAN ONLY have ONE abstract!") : "";
+        }
 
         // ToDo - Add Business rule validations (exemple : publish date can't be shorter then today)
     }

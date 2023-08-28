@@ -3,7 +3,9 @@
 namespace App\ApplicationServices\Services;
 
 use Illuminate\Http\Request;
+use Exception;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use App\Domain\Aggregates\Document\TemporaryFile;
 use App\ApplicationServices\IServices\IMediaService;
@@ -47,6 +49,33 @@ class MediaService implements IMediaService
                 ]);
             } else {
                 return 'No file uploaded';
+            }
+        } catch (ValidationException $e) {
+            return 'Error: ' . $e->getMessage();
+        } catch (\Exception $e) {
+            return 'Error: ' . $e;
+        }
+    }
+
+    public function deleteTemporaryFile(Request $request)
+    {
+        try {
+            $request->validate([
+                'folder' => 'required'
+            ]);
+
+            $folder = env('MEDIA_TEMP_FOLDER') .  $request->folder;
+
+            // Removes temporary file folder and its contents
+            if (Storage::exists($folder)) {
+                Storage::deleteDirectory($folder);
+
+                // Deletes temporary file record in DB
+                TemporaryFile::where('folder', $request->folder)->delete();
+
+                return "File Deleted";
+            } else {
+                throw new Exception("Folder does not exists");
             }
         } catch (ValidationException $e) {
             return 'Error: ' . $e->getMessage();

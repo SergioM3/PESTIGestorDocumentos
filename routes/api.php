@@ -34,6 +34,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/document', [DocumentController::class,'submitNewDocument']);
 
     Route::post('/logout', [LoginController::class,'logout']);
+    Route::get('/get-logged-user', [LoginController::class,'getLoggedUser']);
 
     // PUT Routes
     Route::put('/document/{id}', [DocumentController::class,'editDocument']);
@@ -43,4 +44,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // File upload routes
     Route::post('temp_file', [MediaController::class,'saveTemporaryFile']);
+    Route::delete('temp_file', [MediaController::class,'deleteTemporaryFile']);
 });

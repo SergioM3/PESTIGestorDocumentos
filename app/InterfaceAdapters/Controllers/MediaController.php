@@ -43,4 +43,21 @@ class MediaController extends Controller
             return 'Error: ' . $e;
         }
     }
+
+    /**
+     * DELETE Uploaded Temporary File
+     *
+     * This endpoint deletes a file on the request from a temporary location
+     * and deletes it's meta to a database table
+     *
+     * @bodyParam folder folder name id where the file is. Example : "6449ce12a98dc-1682558482"
+     */
+    public function deleteTemporaryFile(Request $request)
+    {
+        try {
+            return $this->service->deleteTemporaryFile($request);
+        } catch (\Exception $e) {
+            return 'Error: ' . $e;
+        }
+    }
 }

@@ -194,7 +194,7 @@ class DocumentController extends Controller
      *
      * @bodyParam document_type_id integer required ID of the document (Full list of ids can be retreived with api/document_types). Example: 1
      * @bodyParam publish_date datetime required Publish date of the document. Example: 2025-12-22 18:00:11
-     * @bodyParam document_metadata object[] required Document metadata. MUST HAVE AT LEAST A TITLE (id=1) Example: [{"value": "quis","metadata_type": {"id": 1,"description": "Title 1"}},{"value": "laudantium","metadata_type": {"id": 2,"description": "abstract 1"}}]
+     * @bodyParam document_metadata object[] required Document metadata. MUST HAVE AT LEAST A TITLE (id=1) Example: [{"value": "quis","metadata_type": {"id": 1}},{"value": "laudantium","metadata_type": {"id": 2}}]
      *
      * @response 400 scenario="Temp folder missing" {
      *      "error": "temp_document_folder missing. Upload a temporary file first with api/temp_file"
@@ -235,7 +235,7 @@ class DocumentController extends Controller
         }
 
         try {
-            return response()->json(['id' => $this->service->submitNewDocument($documentSubmitDTO), 'message' => 'Message Submitted'], 201);
+            return response()->json(['id' => $this->service->submitNewDocument($documentSubmitDTO), 'message' => 'Document Submitted'], 201);
         } catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 400);
         }
@@ -249,7 +249,7 @@ class DocumentController extends Controller
      * @urlParam id integer required The id of the document. Example: 6
      * @bodyParam document_type_id integer ID of the document (Full list of ids can be retreived with api/document_types). Example: 1
      * @bodyParam publish_date datetime Publish date of the document. Example: 2025-12-22 18:00:11
-     * @bodyParam document_metadata object[] Document metadata. MUST HAVE AT LEAST A TITLE (id=1) Example: [{"value": "quis","metadata_type": {"id": 1,"description": "Title 1"}},{"value": "laudantium","metadata_type": {"id": 2,"description": "abstract 1"}}]
+     * @bodyParam document_metadata object[] Document metadata. MUST HAVE AT LEAST A TITLE (id=1) Example: [{"value": "quis","metadata_type": {"id": 1}},{"value": "laudantium","metadata_type": {"id": 2}}]
      *
      * @response 400 scenario="Document ID doesnt exist" {
      *      "error": "The document you're trying to edit doesn't exist"

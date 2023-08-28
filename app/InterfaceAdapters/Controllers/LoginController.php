@@ -45,7 +45,7 @@ class LoginController extends Controller
             if (Auth::attempt($credentials)) {
                 $user = Auth::getLastAttempted();
                 return [
-                    'token' => $user->createToken(time())->plainTextToken
+                    'token' => $user->createToken(time())->plainTextToken,
                 ];
             }
             return response()->json(['error' => "Invalid Credentials"], 401);
@@ -76,5 +76,23 @@ class LoginController extends Controller
         Auth::user()->currentAccessToken()->delete();
 
         return "logged out";
+    }
+
+    /**
+     * GetLoggedUser
+     *
+     * Gets data from current logged user
+     *
+     */
+    public function getLoggedUser()
+    {
+        $user = Auth::user();
+
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'admin' => $user->admin
+        ];
     }
 }

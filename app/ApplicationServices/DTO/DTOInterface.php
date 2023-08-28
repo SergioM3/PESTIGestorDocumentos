@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\ApplicationServices\DTO;
 
 use Illuminate\Contracts\Validation\Validator;

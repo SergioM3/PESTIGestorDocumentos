@@ -41,20 +41,33 @@ class DocumentMapper
         // Maps records in DocumentMetadata of the document to it's metadata strings
         $document_keywords = [];
         $document_authors = [];
+
         foreach ($document->documentMetadata as $document_metadata) {
             $document_metadata = DocumentMetadataMapper::toDTO($document_metadata);
             switch ($document_metadata->metadata_type->id) {
                 case 1:
-                    $document_title = $document_metadata->value;
+                    $document_title         = $document_metadata->value;
                     break;
                 case 2:
-                    $document_abstract = $document_metadata->value;
+                    $document_abstract      = $document_metadata->value;
                     break;
                 case 3:
-                    $document_keywords[] = $document_metadata->value;
+                    $document_keywords[]    = $document_metadata->value;
                     break;
                 case 4:
-                    $document_authors[] = $document_metadata->value;
+                    $document_authors[]     = $document_metadata->value;
+                    break;
+                case 5:
+                    $document_doi           = $document_metadata->value;
+                    break;
+                case 6:
+                    $document_zenodoID      = $document_metadata->value;
+                    break;
+                case 7:
+                    $document_doiBadge      = $document_metadata->value;
+                    break;
+                case 8:
+                    $document_doiURL        = $document_metadata->value;
                     break;
                 default:
                     break;
@@ -66,13 +79,15 @@ class DocumentMapper
             $document->user_id,
             $document->publish_date,
             $document->documentType,
-            null, // ToDo - Add Doi to document model and retreive it here
-            null, // url of internal document must be null
             "Internal", // Source
-            isset($document_title)    ? $document_title     : null,
-            isset($document_abstract) ? $document_abstract  : null,
-            isset($document_keywords) ? $document_keywords  : null,
-            isset($document_authors)  ? $document_authors   : null,
+            isset($document_title)      ? $document_title       : null,
+            isset($document_abstract)   ? $document_abstract    : null,
+            isset($document_keywords)   ? $document_keywords    : null,
+            isset($document_authors)    ? $document_authors     : null,
+            isset($document_doi)        ? $document_doi         : null,
+            isset($document_zenodoID)   ? $document_zenodoID    : null,
+            isset($document_doiBadge)   ? $document_doiBadge    : null,
+            isset($document_doiURL)     ? $document_doiURL      : null
         );
     }
 }

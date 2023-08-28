@@ -17,6 +17,15 @@ interface IMediaService
     public function saveTemporaryFile(Request $request);
 
     /**
+     * Deletes a file on the request from a temporary location
+     * and deletes it's meta to a database table
+     *
+     * @param  Request $request
+     * @return void
+     */
+    public function deleteTemporaryFile(Request $request);
+
+    /**
      * Encrypts a file according to config/app.php configuration algorithms
      *
      * @param  string $filePath # Path to file to encrypt :

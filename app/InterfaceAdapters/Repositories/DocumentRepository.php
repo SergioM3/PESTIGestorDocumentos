@@ -38,7 +38,7 @@ class DocumentRepository implements IDocumentRepository
         $query = $this->addSearchQueryFilters($query);
         $query = $this->addPublishedFilter($query);
         $query = $this->addOrderBy($query);
-        //dd(gettype($query));
+
         return $query->paginate(request()->page_size ?? 20); // Paginate according to page_size param, otherwise 20
     }
 
